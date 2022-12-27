@@ -1,0 +1,335 @@
+import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:otp_auth/Pages/createAccountPage.dart';
+import 'package:otp_auth/Pages/forgotPasswordPage.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
+
+class MyPhone extends StatefulWidget {
+  final VoidCallback onClickedSignUp;
+   MyPhone({super.key, required this.onClickedSignUp});
+
+  static String verify = "";
+
+  @override
+  State<MyPhone> createState() => _MyPhoneState();
+}
+
+class _MyPhoneState extends State<MyPhone> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  TextEditingController numberController = TextEditingController();
+  var phone = '';
+
+  @override
+  void initState() {
+    numberController.text = '+91';
+    super.initState();
+
+    // 1. This method call when app in terminated state and you get a notification
+    // when you click on notification app open from terminated state and you can get notification data in this method
+
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
+        print("FirebaseMessaging.instance.getInitialMessage");
+        if (message != null) {
+          print("New Notification");
+          // if (message.data['_id'] != null) {
+          //   Navigator.of(context).push(
+          //     MaterialPageRoute(
+          //       builder: (context) => DemoScreen(
+          //         id: message.data['_id'],
+          //       ),
+          //     ),
+          //   );
+          // }
+        }
+      },
+    );
+
+    // 2. This method only call when App in forground it mean app must be opened
+    FirebaseMessaging.onMessage.listen(
+      (message) {
+        print("FirebaseMessaging.onMessage.listen");
+        if (message.notification != null) {
+          print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data11 ${message.data}");
+          // LocalNotificationService.display(message);
+        }
+      },
+    );
+
+    // 3. This method only call when App in background and not terminated(not closed)
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (message) {
+        print("FirebaseMessaging.onMessageOpenedApp.listen");
+        if (message.notification != null) {
+          print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data22 ${message.data['_id']}");
+        }
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body:
+          /*Container(
+        margin: const EdgeInsets.only(left: 25, right: 25),
+        alignment: Alignment.center,
+        child:*/
+          SingleChildScrollView(
+        // reverse: true,
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                WaveWidget(
+                  config: CustomConfig(durations: [
+                    18000,
+                    30000,
+                    60000,
+                    22000
+                  ], heightPercentages: [
+                    0.55,
+                    0.65,
+                    0.66,
+                    0.68
+                  ], colors: [
+                    const Color(0xFF2292D7),
+                    const Color(0xFFAAD7FB),
+                    const Color(0xFFA5D4F9),
+                    const Color(0xFFFFFFFF)
+                  ]),
+                  size: const Size(double.infinity, 200),
+                  waveAmplitude: 35,
+                  backgroundColor: const Color(0xFF2E6294),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  'Sign In',
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'raleway',
+                      color: Color(0xFF2A3F74)),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                const Text(
+                  'Enter your email & password',
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'raleway',
+                      color: Color(0xFF2A3F74)),
+                ),
+                const SizedBox(height: 30),
+                /*Container(
+                  padding: const EdgeInsets.only(left: 25, right: 25),
+                  height: 60,
+                  width: 290,
+                  decoration: BoxDecoration(
+                      border:
+                          Border.all(width: 2, color: const Color(0xFF2A3F74)),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: 10),
+                      SizedBox(
+                        width: 30,
+                        child: TextField(
+                          controller: numberController,
+                          keyboardType: TextInputType.number,
+                          decoration:
+                              const InputDecoration(border: InputBorder.none),
+                        ),
+                      ),
+                      const Text(
+                        '|',
+                        style:
+                            TextStyle(fontSize: 33, color: Color(0xFF12172B)),
+                      ),*/
+                      const SizedBox(width: 10),
+                      // Padding(padding: EdgeInsets.all(20)),
+                      Form(key: formKey,
+                      child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 0),
+              Container(
+                padding: const EdgeInsets.only(left: 25, right: 25),
+                child: TextFormField(
+                  controller: emailController,
+                  cursorColor: Colors.black,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (email) =>
+                      email != null && !EmailValidator.validate(email)
+                          ? 'Enter a Valid email'
+                          : null,
+                  decoration: const InputDecoration(labelText: 'Email',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.only(left: 25, right: 25),
+                child: TextFormField(
+                  controller: passwordController,
+                  cursorColor: Colors.black,
+                  textInputAction: TextInputAction.done,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => value != null && value.length < 6
+                      ? 'Enter min. 6 characters'
+                      : null,
+                  decoration: const InputDecoration(labelText: 'Password',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
+                  obscureText: true,
+                ),
+              ),
+                      /*Expanded(
+                          child: TextField(
+                        style: const TextStyle(
+                            color: Color(0xFF12172B),
+                            fontFamily: 'inter',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1.5),
+                        onChanged: (value) {
+                          phone = value;
+                        },
+                        keyboardType: TextInputType.phone,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: "Phone"),
+                      ))*/
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 25),
+                SizedBox(
+                  width: 214,
+                  height: 47,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          // primary: const Color(0xFF6FADE0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25)),
+                          padding: const EdgeInsets.all(0)),
+                      onPressed: signIn,
+                      child: Ink(
+                        decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: [Color(0xFF6FADE0), Color(0xFF4483D0)]),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(25))),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Sign In',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Color(0xFFFFFFFF),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ))),
+                      const SizedBox(height: 24),
+            GestureDetector(
+              child: Text('Forgot Password',
+              style: TextStyle(decoration: TextDecoration.underline,
+              color: Theme.of(context).colorScheme.secondary,
+              fontSize: 20),),onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const ForgotPasswordPage())),
+            ),
+            /*const SizedBox(height: 24),
+            RichText(
+                text: TextSpan(
+                    style: const TextStyle(color: Colors.black, fontSize: 16),
+                    text: 'No account?  ',
+                    children: [
+                  TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>  CreateAcountPage(onClickedSignIn: () {},))),
+                      text: 'Sign Up',
+                      style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Colors.blue,
+                          fontSize: 22))
+                ]))*/
+                      ])]))); /*onPressed: () async {
+                      await FirebaseAuth.instance.verifyPhoneNumber(
+                        phoneNumber: numberController.text + phone,
+                        verificationCompleted:
+                            (PhoneAuthCredential credential) {},
+                        verificationFailed: (FirebaseAuthException e) {
+                           Fluttertoast.showToast(msg: "Please Enter a Valid number",
+                        fontSize: 18,
+                        backgroundColor: const Color(0xFF2292D7),
+                        textColor: const Color(0xFFFFFFFF)
+                        );
+                        },
+                        codeSent: (String verificationId, int? resendToken) {
+                          MyPhone.verify = verificationId;
+                          Navigator.pushNamed(context, '/OTPVerification');
+                        },
+                        codeAutoRetrievalTimeout: (String verificationId) {},
+                      );
+                    },*/
+  }
+// Phone number otp
+  Future verifyPhoneNumber() async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: numberController.text + phone,
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {
+        Fluttertoast.showToast(
+            msg: "Please Enter a Valid number",
+            fontSize: 18,
+            backgroundColor: const Color(0xFF2292D7),
+            textColor: const Color(0xFFFFFFFF));
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        MyPhone.verify = verificationId;
+        Navigator.pushNamed(context, '/OTPVerification');
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
+// email verification
+  Future signIn() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      Fluttertoast.showToast(
+          msg: '${e.message}',
+          gravity: ToastGravity.TOP,
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.grey,
+          textColor: Colors.black,
+          fontSize: 16);
+    }
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    // navigatorKey.currentState!.popUntil((route) => route.isFirst);
+  }
+}
