@@ -31,7 +31,7 @@ class _GraphState extends State<Graph> {
     currentMonthList.sort((a, b) => a.day.compareTo(b.day));
     currentMonthList = currentMonthList.toSet().toList();
     scrollController = 
-    ScrollController(initialScrollOffset:50.0 * currentDateTime.day);
+    ScrollController(initialScrollOffset:45.0 * currentDateTime.day);
   }
 
   //month and year

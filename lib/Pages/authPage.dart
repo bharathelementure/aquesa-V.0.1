@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:otp_auth/Pages/createAccountPage.dart';
-import 'package:otp_auth/Pages/siginInPage.dart';
 import 'package:otp_auth/registration.dart';
 
 class AuthPage extends StatefulWidget {

@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_auth/Pages/authPage.dart';
+import 'package:otp_auth/Pages/siginInPage.dart';
 import 'package:otp_auth/Pages/verifyemailPage.dart';
 import 'package:otp_auth/circularSetDailyLimit.dart';
 import 'package:otp_auth/darkOTP.dart';
@@ -34,6 +35,7 @@ Future<void> main() async {
     routes: {
       '/SplashScreen': (context) => const SplashScreen(),
       '/Graph': (context) => const Graph(),
+      '/verifyemailPage':(context) => const VerifyEmailPage(),
       '/Registration': (context) => const Registration(),
       '/OTPVerification': (context) => const MyVerify(),
       '/darkOTP': (context) => const DarkOTP(),
@@ -84,9 +86,9 @@ class _IntializerState extends State<Intializer> {
       body: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-          if(snapshot.hasData) {
+            if (snapshot.hasData) {
               return const VerifyEmailPage();
-            } else {
+            }else {
               return const AuthPage();
             }
           }),

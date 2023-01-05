@@ -1,18 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:otp_auth/models/userModels.dart';
 import 'package:otp_auth/registration.dart';
 import 'package:otp_auth/setDilyLimit.dart';
 
-class NavDrawer extends StatelessWidget {
+class NavDrawer extends StatefulWidget {
   const NavDrawer({Key? key}) : super(key: key);
 
   static const String appliences = "Owner";
 
   @override
-  Widget build(BuildContext context) {
-    double volumeValue = 10;
-    final auth = FirebaseAuth.instance;
+  State<NavDrawer> createState() => _NavDrawerState();
+}
 
+class _NavDrawerState extends State<NavDrawer> {
+  double volumeValue = 10;
+  final retrive = FirebaseAuth.instance;
+  @override
+  Widget build(BuildContext context) {
+    Future creuse = readUser();
+    print(creuse.runtimeType);
+    print('');
     return Drawer(
       child: Material(
         color: const Color(0xFFFFFFFF),
@@ -42,30 +51,152 @@ class NavDrawer extends StatelessWidget {
                         color: Color(0xFFFFFFFF),
                       ),
                       const SizedBox(
-                        width: 30,
+                        width: 0,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Shefali Singh',
-                            style: TextStyle(
+                        children: [
+                          /*StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('Create Account')
+                                  .snapshots(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.hasError) {
+                                  return const Text("Something went wrong");
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Text('Loading..');
+                                }
+                                return ListView(
+                                  children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                                    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                                    return ListTile(title: Text(data['Name'],style: const TextStyle(
+                                              fontFamily: 'dmsans',
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 12,
+                                              color: Color(0xFFFFFFFF)),),
+                                    subtitle: Text(data['phone']),);
+                                  }
+                                ).toList().cast());
+                              })*/
+                          FutureBuilder(
+                            future: FirebaseFirestore.instance
+                                .collection('Create Account')
+                                .doc('Ou6i8ct0bddtgcfdC5cc349N7833')
+                                .get(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<
+                                        DocumentSnapshot<Map<String, dynamic>>>
+                                    snapshot) {
+                              print('snapshot data');
+                              print(snapshot.data!.data());
+                              if (snapshot.hasError) {
+                                return const Text('error');
+                              } else if (snapshot.hasData) {
+                                final userCreate = snapshot.data!.data();
+                                print(userCreate?['Name']);
+                                // print(userModel);
+                                return Text(
+                                  userCreate?['Name'],
+                                  style: const TextStyle(
+                                      fontFamily: 'dmsans',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 13,
+                                      color: Color(0xFFFFFFFF)),
+                                );
+                                // return userCreate == null
+                                //     ? const Center(child: Text('No User'))
+                                //     : buildUser(userModel);
+                              } else {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                            },
+                          ),const SizedBox(height: 10,width: 10,),
+                           FutureBuilder(
+                            future: FirebaseFirestore.instance
+                                .collection('Create Account')
+                                .doc('Ou6i8ct0bddtgcfdC5cc349N7833')
+                                .get(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<
+                                        DocumentSnapshot<Map<String, dynamic>>>
+                                    snapshot) {
+                              print('snapshot data');
+                              print(snapshot.data!.data());
+                              if (snapshot.hasError) {
+                                return const Text('error');
+                              } else if (snapshot.hasData) {
+                                final userCreate = snapshot.data!.data();
+                                print(userCreate?['phone']);
+                                // print(userModel);
+                                return Text(
+                                  userCreate?['phone'],
+                                   style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: 'dmsans',
+                                color: Color(0xFFABABAB)),
+                                );
+                                // return userCreate == null
+                                //     ? const Center(child: Text('No User'))
+                                //     : buildUser(userModel);
+                              } else {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                            },
+                          ),
+                          /*StreamBuilder(
+                              /*stream: FirebaseFirestore.instance
+                                  .collection("Create Account")
+                                  .where("uid", isEqualTo: retrive.currentUser!.uid).snapshots(),*/
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.builder(
+                                  itemCount: snapshot.data!.docs.length,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, i) {
+                                    var datacreate = snapshot.data!.docs[i];
+                                    return /*UserAccountsDrawerHeader(
+                                            accountName: Text(data[i]),
+                                            accountEmail: Text(data['phone']));*/
+                                        Text(
+                                      snapshot.data!.docs[i]["Name"].toString(),
+                                      style: const TextStyle(
+                                          fontFamily: 'dmsans',
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12,
+                                          color: Color(0xFFFFFFFF)),
+                                    );
+                                  });
+                            } else {
+                              return const CircularProgressIndicator();
+                            }
+                          })*/
+                          /*Text(
+                            '$creuse',
+                            // 'Nagathihalli Bharath',
+                            style: const TextStyle(
                                 fontFamily: 'dmsans',
                                 fontWeight: FontWeight.w700,
                                 fontSize: 12,
                                 color: Color(0xFFFFFFFF)),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
-                          Text(
-                            '+91 9867544567',
+                          const Text(
+                            '+91 9686439332',
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: 'dmsans',
                                 color: Color(0xFFABABAB)),
-                          ),
+                          ),*/
                           /*Row(crossAxisAlignment: CrossAxisAlignment.start,
           children: [RadioListTile(title: Text('Owner'),value: "Owner",
               groupValue: appliences, onChanged: (value){}),
@@ -246,7 +377,7 @@ class NavDrawer extends StatelessWidget {
                 ],
               ),
             ),
-             //bill payments
+            //bill payments
             const SizedBox(
               height: 7,
             ),
@@ -273,15 +404,17 @@ class NavDrawer extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      TextButton(onPressed: () {},
-                      child: const Text(
-                        'Bill Payments ',
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'dmsans',
-                            color: Color(0xFF181D27)),
-                      ),),/*
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'Bill Payments ',
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'dmsans',
+                              color: Color(0xFF181D27)),
+                        ),
+                      ), /*
                       SizedBox(
                         height: 10,
                       ),
@@ -335,15 +468,17 @@ class NavDrawer extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      TextButton(onPressed: () {},
-                      child: const Text(
-                        'Payment Settings ',
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'dmsans',
-                            color: Color(0xFF181D27)),
-                      ),),/*
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'Payment Settings ',
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'dmsans',
+                              color: Color(0xFF181D27)),
+                        ),
+                      ), /*
                       SizedBox(
                         height: 7,
                       ),
@@ -397,8 +532,11 @@ class NavDrawer extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () async {
-                          await auth.signOut();
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Registration()));
+                          await retrive.signOut();
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Registration()));
                         },
                         child: const Text(
                           'Log Out ',
@@ -425,8 +563,11 @@ class NavDrawer extends StatelessWidget {
                   const Spacer(),
                   IconButton(
                       onPressed: () async {
-                         await auth.signOut();
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Registration()));
+                        await retrive.signOut();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Registration()));
                       },
                       icon: const Icon(
                         Icons.arrow_forward_ios_outlined,
@@ -469,16 +610,18 @@ class NavDrawer extends StatelessWidget {
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children:  [
-                      TextButton(onPressed: () {},
-                      child: const Text(
-                        'Help & Support',
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'dmsans',
-                            color: Color(0xFF181D27)),
-                      ),),
+                    children: [
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'Help & Support',
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'dmsans',
+                              color: Color(0xFF181D27)),
+                        ),
+                      ),
                     ],
                   ),
                   const Spacer(),
@@ -521,15 +664,17 @@ class NavDrawer extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      TextButton(onPressed: () {},
-                      child: const Text(
-                        'About App',
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'dmsans',
-                            color: Color(0xFF181D27)),
-                      ),),
+                      TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          'About App',
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'dmsans',
+                              color: Color(0xFF181D27)),
+                        ),
+                      ),
                     ],
                   ),
                   const Spacer(),
@@ -548,4 +693,25 @@ class NavDrawer extends StatelessWidget {
       ),
     );
   }
+
+  Future readUser() async {
+    final docUser = FirebaseFirestore.instance
+        .collection("Create Account")
+        .doc('Ou6i8ct0bddtgcfdC5cc349N7833');
+    final snapshot = await docUser.get();
+    print('');
+    print(snapshot.get('Name'));
+    print('');
+    //  if (snapshot.exists) {
+    //    return snapshot.get('Name');
+    //     // return UserModel.fromJson(snapshot.data()!);
+    //   }
+    // final realdata = snapshot.get('Name');
+    // return snapshot;
+  }
+
+  Widget buildUser(UserModel userModel) => ListTile(
+        title: Text(userModel.Name.toString()),
+        subtitle: Text(userModel.phone.toString()),
+      );
 }
