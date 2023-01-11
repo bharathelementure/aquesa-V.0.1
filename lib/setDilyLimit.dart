@@ -19,7 +19,7 @@ class SetDailyLimit extends StatefulWidget {
 String? stringResponse;
 
 class _SetDailyLimitState extends State<SetDailyLimit> {
-  Future apiCall() async {
+  Future apiConsumption() async {
     http.Response response;
     response =
         await http.post(Uri.parse("http://192.168.0.116:8000/watermeter"));
@@ -34,7 +34,7 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
 
   @override
   void initState() {
-    apiCall();
+    apiConsumption();
     super.initState();
   }
 
@@ -135,11 +135,11 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            stringResponse.toString(),
+                        children: const [
+                          Text('69.7',
+                            // stringResponse.toString(),
                             // widget.volumeValue.ceil().toString(),
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontFamily: 'inter',
                                 fontSize: 100,
                                 fontWeight: FontWeight.w700,
@@ -204,7 +204,7 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                                     fontWeight: FontWeight.w600),
                               ))))),
               const SizedBox(
-                height: 151,
+                height: 121,
               ),
               WaveWidget(
                 config: CustomConfig(durations: [

@@ -81,9 +81,10 @@ class _NavDrawerState extends State<NavDrawer> {
                                   }
                                 ).toList().cast());
                               })*/
-                          FutureBuilder(
+                          // user data is provided by id mentioning
+                          /*FutureBuilder(
                             future: FirebaseFirestore.instance
-                                .collection('Create Account')
+                                .collection('users')
                                 .doc('Ou6i8ct0bddtgcfdC5cc349N7833')
                                 .get(),
                             builder: (BuildContext context,
@@ -92,9 +93,9 @@ class _NavDrawerState extends State<NavDrawer> {
                                     snapshot) {
                               print('snapshot data');
                               print(snapshot.data!.data());
-                              if (snapshot.hasError) {
+                              /*if (snapshot.hasError) {
                                 return const Text('error');
-                              } else if (snapshot.hasData) {
+                              } else */if (snapshot.hasData) {
                                 final userCreate = snapshot.data!.data();
                                 print(userCreate?['Name']);
                                 // print(userModel);
@@ -114,10 +115,14 @@ class _NavDrawerState extends State<NavDrawer> {
                                     child: CircularProgressIndicator());
                               }
                             },
-                          ),const SizedBox(height: 10,width: 10,),
-                           FutureBuilder(
+                          ),
+                          const SizedBox(
+                            height: 10,
+                            width: 10,
+                          ),
+                          FutureBuilder(
                             future: FirebaseFirestore.instance
-                                .collection('Create Account')
+                                .collection('users')
                                 .doc('Ou6i8ct0bddtgcfdC5cc349N7833')
                                 .get(),
                             builder: (BuildContext context,
@@ -126,19 +131,19 @@ class _NavDrawerState extends State<NavDrawer> {
                                     snapshot) {
                               print('snapshot data');
                               print(snapshot.data!.data());
-                              if (snapshot.hasError) {
+                              /*if (snapshot.hasError) {
                                 return const Text('error');
-                              } else if (snapshot.hasData) {
+                              } else*/ if (snapshot.hasData) {
                                 final userCreate = snapshot.data!.data();
                                 print(userCreate?['phone']);
                                 // print(userModel);
                                 return Text(
                                   userCreate?['phone'],
-                                   style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'dmsans',
-                                color: Color(0xFFABABAB)),
+                                  style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'dmsans',
+                                      color: Color(0xFFABABAB)),
                                 );
                                 // return userCreate == null
                                 //     ? const Center(child: Text('No User'))
@@ -148,35 +153,32 @@ class _NavDrawerState extends State<NavDrawer> {
                                     child: CircularProgressIndicator());
                               }
                             },
+                          ),*/
+                          // current user data
+                          StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('users')
+                                .snapshots(),
+                            builder: (context,AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                              if (!snapshot.hasData) {
+                                return CircularProgressIndicator();
+                              }
+                              print(snapshot.data!.docs.asMap()['name']);
+                              return Container(
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [Text(snapshot.data!.docs[0]['name']),
+                                    // SizedBox(height: 8),
+                                    // Text(snapshot.data!.docs[1][''])
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                          /*StreamBuilder(
-                              /*stream: FirebaseFirestore.instance
-                                  .collection("Create Account")
-                                  .where("uid", isEqualTo: retrive.currentUser!.uid).snapshots(),*/
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                            if (snapshot.hasData) {
-                              return ListView.builder(
-                                  itemCount: snapshot.data!.docs.length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, i) {
-                                    var datacreate = snapshot.data!.docs[i];
-                                    return /*UserAccountsDrawerHeader(
-                                            accountName: Text(data[i]),
-                                            accountEmail: Text(data['phone']));*/
-                                        Text(
-                                      snapshot.data!.docs[i]["Name"].toString(),
-                                      style: const TextStyle(
-                                          fontFamily: 'dmsans',
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12,
-                                          color: Color(0xFFFFFFFF)),
-                                    );
-                                  });
-                            } else {
-                              return const CircularProgressIndicator();
-                            }
-                          })*/
                           /*Text(
                             '$creuse',
                             // 'Nagathihalli Bharath',
@@ -378,7 +380,7 @@ class _NavDrawerState extends State<NavDrawer> {
               ),
             ),
             //bill payments
-            const SizedBox(
+            /*const SizedBox(
               height: 7,
             ),
             Container(
@@ -440,9 +442,9 @@ class _NavDrawerState extends State<NavDrawer> {
                       ))
                 ],
               ),
-            ),
+            ),*/
             //payments settings
-            const SizedBox(
+            /*const SizedBox(
               height: 0,
             ),
             Container(
@@ -502,7 +504,7 @@ class _NavDrawerState extends State<NavDrawer> {
                       ))
                 ],
               ),
-            ),
+            ),*/
             //log out
             const SizedBox(
               height: 0,
@@ -579,7 +581,7 @@ class _NavDrawerState extends State<NavDrawer> {
             ),
             /*more
         SizedBox(height: 0,),Text('More',style: TextStyle(fontSize: 14,
-        fontWeight: FontWeight.w600,fontFamily: 'dmsans',color: Color(0xFF181D27)),),*/
+        fontWeight: FontWeight.w600,fontFamily: 'dmsans',color: Color(0xFF181D27)),),
             //help and support
             const SizedBox(
               height: 10,
@@ -687,7 +689,7 @@ class _NavDrawerState extends State<NavDrawer> {
                       ))
                 ],
               ),
-            ),
+            ),*/
           ],
         ),
       ),
@@ -696,8 +698,8 @@ class _NavDrawerState extends State<NavDrawer> {
 
   Future readUser() async {
     final docUser = FirebaseFirestore.instance
-        .collection("Create Account")
-        .doc('Ou6i8ct0bddtgcfdC5cc349N7833');
+        .collection("Account Created")
+        .doc();
     final snapshot = await docUser.get();
     print('');
     print(snapshot.get('Name'));

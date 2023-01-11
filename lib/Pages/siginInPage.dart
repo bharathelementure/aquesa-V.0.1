@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -11,7 +12,7 @@ import 'package:wave/wave.dart';
 
 class MyPhone extends StatefulWidget {
   final VoidCallback onClickedSignUp;
-   MyPhone({super.key, required this.onClickedSignUp});
+  MyPhone({super.key, required this.onClickedSignUp});
 
   static String verify = "";
 
@@ -81,200 +82,153 @@ class _MyPhoneState extends State<MyPhone> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body:
-          /*Container(
+        resizeToAvoidBottomInset: false,
+        body:
+            /*Container(
         margin: const EdgeInsets.only(left: 25, right: 25),
         alignment: Alignment.center,
         child:*/
-          SingleChildScrollView(
-        // reverse: true,
-        child: Stack(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                WaveWidget(
-                  config: CustomConfig(durations: [
-                    18000,
-                    30000,
-                    60000,
-                    22000
-                  ], heightPercentages: [
-                    0.55,
-                    0.65,
-                    0.66,
-                    0.68
-                  ], colors: [
-                    const Color(0xFF2292D7),
-                    const Color(0xFFAAD7FB),
-                    const Color(0xFFA5D4F9),
-                    const Color(0xFFFFFFFF)
-                  ]),
-                  size: const Size(double.infinity, 200),
-                  waveAmplitude: 35,
-                  backgroundColor: const Color(0xFF2E6294),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  'Sign In',
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'raleway',
-                      color: Color(0xFF2A3F74)),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                const Text(
-                  'Enter your email & password',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: 'raleway',
-                      color: Color(0xFF2A3F74)),
-                ),
-                const SizedBox(height: 30),
-                /*Container(
-                  padding: const EdgeInsets.only(left: 25, right: 25),
-                  height: 60,
-                  width: 290,
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(width: 2, color: const Color(0xFF2A3F74)),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(width: 10),
-                      SizedBox(
-                        width: 30,
-                        child: TextField(
-                          controller: numberController,
-                          keyboardType: TextInputType.number,
-                          decoration:
-                              const InputDecoration(border: InputBorder.none),
+            SingleChildScrollView(
+                // reverse: true,
+                child: Stack(children: [
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            WaveWidget(
+              config: CustomConfig(durations: [
+                18000,
+                30000,
+                60000,
+                22000
+              ], heightPercentages: [
+                0.55,
+                0.65,
+                0.66,
+                0.68
+              ], colors: [
+                const Color(0xFF2292D7),
+                const Color(0xFFAAD7FB),
+                const Color(0xFFA5D4F9),
+                const Color(0xFFFFFFFF)
+              ]),
+              size: const Size(double.infinity, 200),
+              waveAmplitude: 35,
+              backgroundColor: const Color(0xFF2E6294),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'Sign In',
+              style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'raleway',
+                  color: Color(0xFF2A3F74)),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const Text(
+              'Enter your email & password',
+              style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'raleway',
+                  color: Color(0xFF2A3F74)),
+            ),
+            const SizedBox(height: 30),
+            const SizedBox(width: 10),
+            // Padding(padding: EdgeInsets.all(20)),
+            Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 0),
+                  Container(
+                    padding: const EdgeInsets.only(left: 25, right: 25),
+                    child: TextFormField(
+                      controller: emailController,
+                      cursorColor: Colors.black,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (email) =>
+                          email != null && !EmailValidator.validate(email)
+                              ? 'Enter a Valid email'
+                              : null,
+                      decoration: const InputDecoration(
+                          labelText: 'Email',
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)))),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Container(
+                    padding: const EdgeInsets.only(left: 25, right: 25),
+                    child: TextFormField(
+                      controller: passwordController,
+                      cursorColor: Colors.black,
+                      textInputAction: TextInputAction.done,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) => value != null && value.length < 6
+                          ? 'Enter min. 6 characters'
+                          : null,
+                      decoration: const InputDecoration(
+                          labelText: 'Password',
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)))),
+                      obscureText: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 25),
+            SizedBox(
+                width: 214,
+                height: 47,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        // primary: const Color(0xFF6FADE0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25)),
+                        padding: const EdgeInsets.all(0)),
+                    onPressed: () {
+                      signIn(emailController.text, passwordController.text);
+                    },
+                    child: Ink(
+                      decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [Color(0xFF6FADE0), Color(0xFF4483D0)]),
+                          borderRadius: BorderRadius.all(Radius.circular(25))),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Sign In',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Color(0xFFFFFFFF),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
-                      const Text(
-                        '|',
-                        style:
-                            TextStyle(fontSize: 33, color: Color(0xFF12172B)),
-                      ),*/
-                      const SizedBox(width: 10),
-                      // Padding(padding: EdgeInsets.all(20)),
-                      Form(key: formKey,
-                      child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 0),
-              Container(
-                padding: const EdgeInsets.only(left: 25, right: 25),
-                child: TextFormField(
-                  controller: emailController,
-                  cursorColor: Colors.black,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (email) =>
-                      email != null && !EmailValidator.validate(email)
-                          ? 'Enter a Valid email'
-                          : null,
-                  decoration: const InputDecoration(labelText: 'Email',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
-                ),
-              ),
-              const SizedBox(height: 4),
-              Container(
-                padding: const EdgeInsets.only(left: 25, right: 25),
-                child: TextFormField(
-                  controller: passwordController,
-                  cursorColor: Colors.black,
-                  textInputAction: TextInputAction.done,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) => value != null && value.length < 6
-                      ? 'Enter min. 6 characters'
-                      : null,
-                  decoration: const InputDecoration(labelText: 'Password',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)))),
-                  obscureText: true,
-                ),
-              ),
-                      /*Expanded(
-                          child: TextField(
-                        style: const TextStyle(
-                            color: Color(0xFF12172B),
-                            fontFamily: 'inter',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1.5),
-                        onChanged: (value) {
-                          phone = value;
-                        },
-                        keyboardType: TextInputType.phone,
-                        decoration: const InputDecoration(
-                            border: InputBorder.none, hintText: "Phone"),
-                      ))*/
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 25),
-                SizedBox(
-                  width: 214,
-                  height: 47,
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          // primary: const Color(0xFF6FADE0),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25)),
-                          padding: const EdgeInsets.all(0)),
-                      onPressed: signIn,
-                      child: Ink(
-                        decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [Color(0xFF6FADE0), Color(0xFF4483D0)]),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(25))),
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'Sign In',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Color(0xFFFFFFFF),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ))),
-                      const SizedBox(height: 24),
+                    ))),
+            const SizedBox(height: 24),
             GestureDetector(
-              child: Text('Forgot Password',
-              style: TextStyle(decoration: TextDecoration.underline,
-              color: Theme.of(context).colorScheme.secondary,
-              fontSize: 20),),onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const ForgotPasswordPage())),
+              child: Text(
+                'Forgot Password',
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 20),
+              ),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ForgotPasswordPage())),
             ),
-            /*const SizedBox(height: 24),
-            RichText(
-                text: TextSpan(
-                    style: const TextStyle(color: Colors.black, fontSize: 16),
-                    text: 'No account?  ',
-                    children: [
-                  TextSpan(
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>  CreateAcountPage(onClickedSignIn: () {},))),
-                      text: 'Sign Up',
-                      style: const TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: Colors.blue,
-                          fontSize: 22))
-                ]))*/
-                      ])]))); /*onPressed: () async {
+          ])
+        ]))); /*onPressed: () async {
                       await FirebaseAuth.instance.verifyPhoneNumber(
                         phoneNumber: numberController.text + phone,
                         verificationCompleted:
@@ -294,6 +248,7 @@ class _MyPhoneState extends State<MyPhone> {
                       );
                     },*/
   }
+
 // Phone number otp
   Future verifyPhoneNumber() async {
     await FirebaseAuth.instance.verifyPhoneNumber(
@@ -315,21 +270,22 @@ class _MyPhoneState extends State<MyPhone> {
   }
 
 // email verification
-  Future signIn() async {
-    try {
+  void signIn(String email, String password) async {
+    if (formKey.currentState!.validate()) {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
-    } on FirebaseAuthException catch (e) {
-      print(e);
-      Fluttertoast.showToast(
+          email: emailController.text, password: passwordController.text).then((id) => {
+            Fluttertoast.showToast(msg: 'Login Successfull'),
+            Navigator.of(context).popUntil((route) => route.isFirst)
+          }).catchError((e) {
+            Fluttertoast.showToast(
           msg: '${e.message}',
           gravity: ToastGravity.TOP,
           toastLength: Toast.LENGTH_LONG,
           backgroundColor: Colors.grey,
           textColor: Colors.black,
           fontSize: 16);
+          });
     }
-    Navigator.of(context).popUntil((route) => route.isFirst);
     // navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }

@@ -515,7 +515,7 @@ class _GraphState extends State<Graph> {
     // final difference = rangeDate.duration;
 
     return Scaffold(
-      backgroundColor: const Color(0xff2A3F74),
+      backgroundColor: const Color(0xffFFFFFF),
       drawer: const NavDrawer(),
       appBar: AppBar(
         elevation: 0,
