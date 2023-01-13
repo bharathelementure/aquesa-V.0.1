@@ -15,6 +15,7 @@ class CreateAcountPage extends StatefulWidget {
 class _CreateAcountPageState extends State<CreateAcountPage> {
   final _auth = FirebaseAuth.instance;
   final formKey = GlobalKey<FormState>();
+  // final _authRepo = Get.put(AuthenticationRepository());
 
   final emailController = TextEditingController();
 
@@ -372,6 +373,9 @@ class UserMode {
         'phone': phone,
         'email': email,
       };
-  static UserMode fromJson(Map<String, dynamic> json) =>
-      UserMode(name: json['name'], email: json['email'], phone: json['phone'],id: json['id']);
+  static UserMode fromJson(Map<String, dynamic> json) => UserMode(
+      name: json['name'],
+      email: json['email'],
+      phone: json['phone'],
+      id: json['id']);
 }

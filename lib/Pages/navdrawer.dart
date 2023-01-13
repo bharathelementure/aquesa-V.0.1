@@ -159,20 +159,42 @@ class _NavDrawerState extends State<NavDrawer> {
                             stream: FirebaseFirestore.instance
                                 .collection('users')
                                 .snapshots(),
-                            builder: (context,AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                            builder: (context,
+                                AsyncSnapshot<
+                                        QuerySnapshot<Map<String, dynamic>>>
+                                    snapshot) {
                               if (!snapshot.hasData) {
-                                return CircularProgressIndicator();
+                                return const CircularProgressIndicator();
                               }
-                              print(snapshot.data!.docs.asMap()['name']);
+                              print(snapshot.requireData.docs
+                                  .asMap()[1]!['phone']);
+                              print(snapshot.data!.docs.asMap()[0]!['phone']);
                               return Container(
                                 child: Padding(
-                                  padding: EdgeInsets.only(top: 0),
+                                  padding: const EdgeInsets.only(top: 0),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [Text(snapshot.data!.docs[0]['name']),
-                                    // SizedBox(height: 8),
-                                    // Text(snapshot.data!.docs[1][''])
+                                    children: [
+                                      Text(
+                                        snapshot.data!.docs[0]['name'],
+                                        style: const TextStyle(
+                                            fontFamily: 'dmsans',
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 12,
+                                            color: Color(0xFFFFFFFF)),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        snapshot.requireData.docs
+                                            .asMap()[0]!['phone']
+                                            .toString(),
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: 'dmsans',
+                                            color: Color(0xFFABABAB)),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -697,9 +719,8 @@ class _NavDrawerState extends State<NavDrawer> {
   }
 
   Future readUser() async {
-    final docUser = FirebaseFirestore.instance
-        .collection("Account Created")
-        .doc();
+    final docUser =
+        FirebaseFirestore.instance.collection("Account Created").doc();
     final snapshot = await docUser.get();
     print('');
     print(snapshot.get('Name'));
