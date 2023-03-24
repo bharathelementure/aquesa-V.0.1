@@ -51,11 +51,11 @@ dependencies:
   qr_code_scanner: ^1.0.1
   fl_chart: ^0.55.2
   intl: ^0.17.0
-  # local_auth: ^2.1.2
   flutter_native_splash: ^2.2.9
   local_auth: ^2.1.2
   internet_connection_checker: ^1.0.0+1
   connectivity_plus: ^3.0.2
+  get: ^4.6.5
 
 
 

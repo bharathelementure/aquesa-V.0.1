@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_auth/Pages/authPage.dart';
-import 'package:otp_auth/Pages/siginInPage.dart';
 import 'package:otp_auth/Pages/verifyemailPage.dart';
 import 'package:otp_auth/circularSetDailyLimit.dart';
 import 'package:otp_auth/darkOTP.dart';
@@ -20,8 +19,8 @@ import 'package:otp_auth/thank_You.dart';
 import 'package:otp_auth/utility.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async {
-  print(message.data.toString());
-  print(message.notification!.title);
+  // print(message.data.toString());
+  // print(message.notification!.title);
 }
 
 Future<void> main() async {
@@ -32,6 +31,9 @@ Future<void> main() async {
   runApp(MaterialApp(
     initialRoute: '/SplashScreen',
     debugShowCheckedModeBanner: false,
+    // defaultTransition: Transition.leftToRightWithFade,
+    // transitionDuration: const Duration(microseconds: 300),
+    // theme: ThemeData(useMaterial3: true),
     routes: {
       '/SplashScreen': (context) => const SplashScreen(),
       '/Graph': (context) => const Graph(),

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:otp_auth/models/userModels.dart';
 import 'package:otp_auth/registration.dart';
 import 'package:otp_auth/setDilyLimit.dart';
 
@@ -17,11 +16,31 @@ class NavDrawer extends StatefulWidget {
 class _NavDrawerState extends State<NavDrawer> {
   double volumeValue = 10;
   final retrive = FirebaseAuth.instance;
+  late String _uid;
+  late String _name;
+  late String _email;
+  late String _phoneNumber;
+  @override
+  void initState() {
+    super.initState();
+    setState(() {});
+    getData();
+  }
+
+  void getData() async {
+    User? curre = FirebaseAuth.instance.currentUser;
+    _uid = curre!.uid;
+    final DocumentSnapshot docUser =
+        await FirebaseFirestore.instance.collection('users').doc(_uid).get();
+    _name = docUser.get('name');
+    print('name $_name');
+    print('');
+    // print('curre.email ${curre.displayName}');
+  }
+
+  final curr = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
-    Future creuse = readUser();
-    print(creuse.runtimeType);
-    print('');
     return Drawer(
       child: Material(
         color: const Color(0xFFFFFFFF),
@@ -167,42 +186,50 @@ class _NavDrawerState extends State<NavDrawer> {
                                 return const CircularProgressIndicator();
                               }
                               print(snapshot.requireData.docs
-                                  .asMap()[1]!['phone']);
+                                  .asMap()[0]!['phone']
+                                  .toString());
+                              print(snapshot.requireData.docs);
+                              print('hello');
+                              print(curr);
                               print(snapshot.data!.docs.asMap()[0]!['phone']);
-                              return Container(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        snapshot.data!.docs[0]['name'],
-                                        style: const TextStyle(
-                                            fontFamily: 'dmsans',
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 12,
-                                            color: Color(0xFFFFFFFF)),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        snapshot.requireData.docs
-                                            .asMap()[0]!['phone']
-                                            .toString(),
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: 'dmsans',
-                                            color: Color(0xFFABABAB)),
-                                      )
-                                    ],
-                                  ),
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      // snapshot
+                                      //     .inState(ConnectionState.active)
+                                      //     .data!
+                                      //     .docs[1]
+                                      //     .get('name'),
+                                      snapshot.data!.docs[3]['name'],
+                                      style: const TextStyle(
+                                          fontFamily: 'dmsans',
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12,
+                                          color: Color(0xFFFFFFFF)),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      snapshot.data!.docs[3]['phone']
+                                          .toString(),
+                                      // snapshot.requireData.docs
+                                      //     .asMap()[0]!['phone']
+                                      //     .toString(),
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'dmsans',
+                                          color: Color(0xFFABABAB)),
+                                    )
+                                  ],
                                 ),
                               );
                             },
                           ),
                           /*Text(
-                            '$creuse',
+                            curr.displayName!,
                             // 'Nagathihalli Bharath',
                             style: const TextStyle(
                                 fontFamily: 'dmsans',
@@ -213,8 +240,8 @@ class _NavDrawerState extends State<NavDrawer> {
                           const SizedBox(
                             height: 10,
                           ),
-                          const Text(
-                            '+91 9686439332',
+                          Text(
+                            curr.phoneNumber!,
                             style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
@@ -277,116 +304,58 @@ class _NavDrawerState extends State<NavDrawer> {
               ),
             ),
             // Set Daily lemit
-            const SizedBox(
-              height: 7,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-              padding: const EdgeInsets.all(0),
-              height: 58,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFFFFF),
-                borderRadius: BorderRadius.circular(5),
-                /*boxShadow: [BoxShadow(offset: Offset(0, 10),blurRadius: 20,//boxShadow with background colors box
-                color: Color(0xFF000000).withOpacity(0.25))]*/
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.opacity_outlined,
-                    color: Color(0xFF555555),
-                    size: 21,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context, '/circularsetDailyLimit');
-                          },
-                          child: const Text(
-                            'Set Daily Limit',
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'dmsans',
-                                color: Color(0xFF181D27)),
-                          )),
-                      const SizedBox(
-                        height: 10,
-                      )
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/circularsetDailyLimit');
-                      },
-                      icon: const Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: Color(0xFFA3A3A3),
-                        size: 15,
-                      ))
-                ],
-              ),
-            ),
-            // Today's Consumption
-            const SizedBox(
-              height: 7,
-            ),
+            const SizedBox(height: 7),
             Container(
               margin: const EdgeInsets.only(left: 20, right: 20),
               padding: const EdgeInsets.all(0),
               height: 58,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color(0xFFFFFFFF),
-                borderRadius: BorderRadius.circular(5),
-                /*boxShadow: [BoxShadow(offset: Offset(0, 10),blurRadius: 20,//boxShadow with background colors box
-                color: Color(0xFF000000).withOpacity(0.25))]*/
-              ),
+                  color: const Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(5)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.percent_outlined,
-                    color: Color(0xFF555555),
-                    size: 21,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => SetDailyLimit(
-                                      volumeValue: volumeValue,
-                                    )));
-                          },
-                          child: const Text(
-                            'Today\'s Consumtion',
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'dmsans',
-                                color: Color(0xFF181D27)),
-                          )),
-                      const SizedBox(
-                        height: 10,
-                      )
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
+                  ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFFFFFFF),
+                          elevation: 0),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/circularsetDailyLimit');
+                      },
+                      icon: const Icon(
+                        Icons.opacity_outlined,
+                        color: Color(0xFF555555),
+                        size: 21,
+                      ),
+                      label: const Text(
+                        'Set Daily Limit ',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'dmsans',
+                            color: Color(0xFF181D27)),
+                      )),
+                ],
+              ),
+            ),
+            // Todays Consumption
+            const SizedBox(height: 0),
+            Container(
+              margin: const EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.all(0),
+              height: 58,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: const Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(5)),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFFFFFFF),
+                          elevation: 0),
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => SetDailyLimit(
@@ -394,198 +363,38 @@ class _NavDrawerState extends State<NavDrawer> {
                                 )));
                       },
                       icon: const Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: Color(0xFFA3A3A3),
-                        size: 15,
-                      ))
+                        Icons.percent_outlined,
+                        color: Color(0xFF555555),
+                        size: 21,
+                      ),
+                      label: const Text(
+                        'Today\'s Consumption ',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'dmsans',
+                            color: Color(0xFF181D27)),
+                      )),
                 ],
               ),
             ),
-            //bill payments
-            /*const SizedBox(
-              height: 7,
-            ),
+            // Log out
+            const SizedBox(height: 0),
             Container(
               margin: const EdgeInsets.only(left: 20, right: 20),
               padding: const EdgeInsets.all(0),
               height: 58,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color(0xFFFFFFFF),
-                borderRadius: BorderRadius.circular(5),
-              ),
+                  color: const Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(5)),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.receipt_long_outlined,
-                    color: Color(0xFF555555),
-                    size: 21,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Bill Payments ',
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'dmsans',
-                              color: Color(0xFF181D27)),
-                        ),
-                      ), /*
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Manage your bills',
-                        style: TextStyle(
-                            fontFamily: 'dmsans',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 11,
-                            color: Color(0xFFABABAB)),
-                      )*/
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () {
-                        // Navigator.pushNamed(context, '/paymentsInvoices');
-                      },
-                      icon: const Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: Color(0xFFA3A3A3),
-                        size: 15,
-                      ))
-                ],
-              ),
-            ),*/
-            //payments settings
-            /*const SizedBox(
-              height: 0,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20),
-              padding: const EdgeInsets.all(0),
-              height: 58,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFFFFF),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.account_balance_wallet_outlined,
-                    color: Color(0xFF555555),
-                    size: 21,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'Payment Settings ',
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'dmsans',
-                              color: Color(0xFF181D27)),
-                        ),
-                      ), /*
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Text(
-                        'Manage your account ',
-                        style: TextStyle(
-                            fontFamily: 'dmsans',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 11,
-                            color: Color(0xFFABABAB)),
-                      )*/
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: Color(0xFFA3A3A3),
-                        size: 15,
-                      ))
-                ],
-              ),
-            ),*/
-            //log out
-            const SizedBox(
-              height: 0,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20),
-              padding: const EdgeInsets.all(0),
-              height: 58,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: const Color(0xFFFFFFFF),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.logout_rounded,
-                    color: Color(0xFF555555),
-                    size: 21,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TextButton(
-                        onPressed: () async {
-                          await retrive.signOut();
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Registration()));
-                        },
-                        child: const Text(
-                          'Log Out ',
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'dmsans',
-                              color: Color(0xFF181D27)),
-                        ),
-                      )
-                      /*SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'To secure account',
-                        style: TextStyle(
-                            fontFamily: 'dmsans',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 11,
-                            color: Color(0xFFABABAB)),
-                      )*/
-                    ],
-                  ),
-                  const Spacer(),
-                  IconButton(
+                  ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFFFFFFF),
+                          elevation: 0),
                       onPressed: () async {
                         await retrive.signOut();
                         Navigator.pushReplacement(
@@ -594,15 +403,23 @@ class _NavDrawerState extends State<NavDrawer> {
                                 builder: (context) => const Registration()));
                       },
                       icon: const Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: Color(0xFFA3A3A3),
-                        size: 15,
-                      ))
+                        Icons.logout_rounded,
+                        color: Color(0xFF555555),
+                        size: 21,
+                      ),
+                      label: const Text(
+                        'Log Out',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'dmsans',
+                            color: Color(0xFF181D27)),
+                      )),
                 ],
               ),
             ),
-            /*more
-        SizedBox(height: 0,),Text('More',style: TextStyle(fontSize: 14,
+            // /*more
+            /*SizedBox(height: 0,),Text('More',style: TextStyle(fontSize: 14,
         fontWeight: FontWeight.w600,fontFamily: 'dmsans',color: Color(0xFF181D27)),),
             //help and support
             const SizedBox(
@@ -717,24 +534,4 @@ class _NavDrawerState extends State<NavDrawer> {
       ),
     );
   }
-
-  Future readUser() async {
-    final docUser =
-        FirebaseFirestore.instance.collection("Account Created").doc();
-    final snapshot = await docUser.get();
-    print('');
-    print(snapshot.get('Name'));
-    print('');
-    //  if (snapshot.exists) {
-    //    return snapshot.get('Name');
-    //     // return UserModel.fromJson(snapshot.data()!);
-    //   }
-    // final realdata = snapshot.get('Name');
-    // return snapshot;
-  }
-
-  Widget buildUser(UserModel userModel) => ListTile(
-        title: Text(userModel.Name.toString()),
-        subtitle: Text(userModel.phone.toString()),
-      );
 }

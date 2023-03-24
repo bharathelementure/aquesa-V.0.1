@@ -135,11 +135,12 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text('69.7',
+                        children: [
+                          Text(
+                            // '69.7',
                             // stringResponse.toString(),
-                            // widget.volumeValue.ceil().toString(),
-                            style: TextStyle(
+                            widget.volumeValue.ceil().toString(),
+                            style: const TextStyle(
                                 fontFamily: 'inter',
                                 fontSize: 100,
                                 fontWeight: FontWeight.w700,

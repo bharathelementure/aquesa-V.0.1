@@ -1,18 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:otp_auth/Pages/createAccountPage.dart';
 import 'package:otp_auth/Pages/forgotPasswordPage.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
 class MyPhone extends StatefulWidget {
   final VoidCallback onClickedSignUp;
-  MyPhone({super.key, required this.onClickedSignUp});
+  const MyPhone({super.key, required this.onClickedSignUp});
 
   static String verify = "";
 
