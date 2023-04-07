@@ -10,6 +10,8 @@ class CreateAcountPage extends StatefulWidget {
 
   @override
   State<CreateAcountPage> createState() => _CreateAcountPageState();
+
+  getUserDetails(email) {}
 }
 
 class _CreateAcountPageState extends State<CreateAcountPage> {
@@ -89,7 +91,7 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
-                                  hintText: 'Bharath',
+                                  hintText: 'Name',
                                   hintStyle: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
@@ -140,7 +142,7 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
-                                  hintText: '9530847184',
+                                  hintText: 'Mobile Number',
                                   hintStyle: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
@@ -334,16 +336,32 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
     if (isValid) {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => userCreated(UserMode(
-              name: nameEditingController.text,
-              email: emailController.text,
-              phone: int.parse(numberController.text))))
-          // .then((value) => {postDetailFirestore()})
+          .then((value) => postDetailFirestore())
+          // userCreated(UserMode(
+          //     name: nameEditingController.text,
+          //     email: emailController.text,
+          //     phone: int.parse(numberController.text))))
           .catchError((e) {
         Fluttertoast.showToast(msg: e!.message);
       });
     }
     Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  postDetailFirestore() async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = FirebaseAuth.instance.currentUser;
+
+    UserMode userMode = UserMode(
+        id: user!.uid,
+        name: nameEditingController.text,
+        email: emailController.text,
+        phone: int.parse(numberController.text));
+    await firebaseFirestore
+        .collection('users')
+        .doc(user.uid)
+        .set(userMode.toJson());
+    Fluttertoast.showToast(msg: "Account created successfully");
   }
 
   Future userCreated(UserMode user) async {
@@ -352,6 +370,15 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
 
     final json = user.toJson();
     await docUser.set(json);
+  }
+
+  Future<void> addUser(UserMode user) {
+    return FirebaseFirestore.instance.collection('users').add({
+      'name': nameEditingController,
+      'phone': numberController,
+      'email': emailController,
+      'id': '',
+    });
   }
 }
 
@@ -367,12 +394,34 @@ class UserMode {
       required this.email,
       required this.phone});
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'phone': phone,
-        'email': email,
-      };
+  Map<String, dynamic> toJson() {
+    return {"id": id, "name": name, "email": email, "phone": phone};
+  }
+
+  factory UserMode.fromSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> document) {
+    final datafet = document.data()!;
+    return UserMode(
+        id: document.id,
+        name: datafet["name"],
+        email: datafet["email"],
+        phone: datafet["phone"]);
+  }
+
+  // receving data from firestore
+  factory UserMode.fromMap(map) {
+    return UserMode(
+        id: map['id'],
+        name: map['name'],
+        email: map['email'],
+        phone: map['phone']);
+  }
+
+  // sending data to firestore
+  Map<String, dynamic> toMap() {
+    return {'id': id, 'email': email, 'name': name, 'phone': phone};
+  }
+
   static UserMode fromJson(Map<String, dynamic> json) => UserMode(
       name: json['name'],
       email: json['email'],

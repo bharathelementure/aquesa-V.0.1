@@ -135,12 +135,12 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: const [
                           Text(
-                            // '69.7',
+                            '69.7',
                             // stringResponse.toString(),
-                            widget.volumeValue.ceil().toString(),
-                            style: const TextStyle(
+                            // widget.volumeValue.ceil().toString(),
+                            style: TextStyle(
                                 fontFamily: 'inter',
                                 fontSize: 100,
                                 fontWeight: FontWeight.w700,
@@ -176,8 +176,14 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                   width: 234,
                   height: 47,
                   child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/circularsetDailyLimit');
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        var navi = await Navigator.pushNamed(
+                            context, '/circularsetDailyLimit');
+                        if (navi == true || navi == null) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/graph', (Route<dynamic> route) => false);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(

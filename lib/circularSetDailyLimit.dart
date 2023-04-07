@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:otp_auth/Pages/navdrawer.dart';
-import 'package:otp_auth/setDilyLimit.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
@@ -30,7 +29,9 @@ class _CircularSetDailyLimitState extends State<CircularSetDailyLimit> {
         appBar: AppBar(
           elevation: 0,
           actions: [
-            PopUpMen(menuList: const [/*
+            PopUpMen(
+              menuList: const [
+                /*
             PopupMenuItem(child: ListTile(
               leading: Icon(CupertinoIcons.person),
               title: Text('My Profile'),
@@ -41,14 +42,16 @@ class _CircularSetDailyLimitState extends State<CircularSetDailyLimit> {
             )),
             PopupMenuDivider(),
             PopupMenuItem(child: Text('Settings'))*/
-          ],icon:
-            IconButton(
+              ],
+              icon: IconButton(
                 onPressed: () {},
                 icon: const Icon(
                   Icons.notifications_outlined,
                   color: Color(0xFF2A3F74),
                   size: 26,
-                ),),),
+                ),
+              ),
+            ),
           ],
           backgroundColor: const Color(0xFFFFFFFF),
           leading: Builder(builder: (context) {
@@ -63,9 +66,7 @@ class _CircularSetDailyLimitState extends State<CircularSetDailyLimit> {
         ),
         resizeToAvoidBottomInset: false,
         body: Stack(children: [
-          Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             const SizedBox(
               height: 0,
             ),
@@ -145,18 +146,18 @@ class _CircularSetDailyLimitState extends State<CircularSetDailyLimit> {
                 // ignore: deprecated_member_use
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SetDailyLimit(volumeValue: _volumeValue,)));
+                      Navigator.pushNamed(context, '/graph');
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => SetDailyLimit(volumeValue: _volumeValue,)));
                     },
-                    style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25)
-                    ),padding: const EdgeInsets.all(0)),
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25)),
+                        padding: const EdgeInsets.all(0)),
                     child: Ink(
                         decoration: const BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Color(0xFF6FADE0),
-                              Color(0xFF4483D0)
-                            ]),
+                            gradient: LinearGradient(
+                                colors: [Color(0xFF6FADE0), Color(0xFF4483D0)]),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(25))),
                         child: Container(
@@ -197,17 +198,19 @@ class _CircularSetDailyLimitState extends State<CircularSetDailyLimit> {
         ]));
   }
 }
+
 class PopUpMen extends StatelessWidget {
   final List<PopupMenuEntry> menuList;
   final Widget? icon;
-  const PopUpMen({Key? key,required this.menuList, this.icon}) : super(key: key);
+  const PopUpMen({Key? key, required this.menuList, this.icon})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(itemBuilder: ((context) => menuList),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-      ),
-      icon: icon,);
+    return PopupMenuButton(
+      itemBuilder: ((context) => menuList),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      icon: icon,
+    );
   }
 }
