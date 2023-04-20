@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:otp_auth/Pages/navdrawer.dart';
+// import 'package:otp_auth/Pages/navdrawer.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
@@ -25,8 +25,22 @@ class _CircularSetDailyLimitState extends State<CircularSetDailyLimit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const NavDrawer(),
+        // drawer: const NavDrawer(),
         appBar: AppBar(
+          backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(color: Color(0xFF2A3F74)),
+          elevation: 0,
+          actions: [
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.notifications_outlined,
+                  color: Color(0xFF2A3F74),
+                  size: 26,
+                ))
+          ],
+        ),
+        /*appBar: AppBar(
           elevation: 0,
           actions: [
             PopUpMen(
@@ -63,7 +77,7 @@ class _CircularSetDailyLimitState extends State<CircularSetDailyLimit> {
                   size: 27,
                 ));
           }),
-        ),
+        ),*/
         resizeToAvoidBottomInset: false,
         body: Stack(children: [
           Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -145,11 +159,19 @@ class _CircularSetDailyLimitState extends State<CircularSetDailyLimit> {
                 height: 47,
                 // ignore: deprecated_member_use
                 child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      var navi = await Navigator.pushNamed(context, '/graph');
+                      if (navi == true || navi == null) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/graph', (Route<dynamic> route) => false);
+                      }
+                    },
+                    /*() {
                       Navigator.pushNamed(context, '/graph');
                       // Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (context) => SetDailyLimit(volumeValue: _volumeValue,)));
-                    },
+                    },*/
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25)),

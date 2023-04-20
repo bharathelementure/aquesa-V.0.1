@@ -22,9 +22,12 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
+  final profileimageController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final nameEditingController = TextEditingController();
   final numberController = TextEditingController();
+  // pasword show or hide
+  bool isObscure = true;
 
   @override
   void dispose() {
@@ -233,24 +236,33 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
                                 passwordController.text = value!;
                               },
                               controller: passwordController,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(
+                              decoration: InputDecoration(
+                                  suffixIcon: IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          isObscure = !isObscure;
+                                        });
+                                      },
+                                      icon: Icon(isObscure
+                                          ? Icons.visibility
+                                          : Icons.visibility_off)),
+                                  border: const OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   hintText: 'Password',
-                                  hintStyle: TextStyle(
+                                  hintStyle: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                       fontFamily: 'raleway',
                                       color: Color(0xFF12172B)),
                                   filled: true,
-                                  fillColor: Color(0xFFFFFFFF),
-                                  focusedBorder: OutlineInputBorder(
+                                  fillColor: const Color(0xFFFFFFFF),
+                                  focusedBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Color(0xFF32B7E1), width: 2),
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
-                                  labelStyle: TextStyle(
+                                  labelStyle: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                       fontFamily: 'raleway',
@@ -261,7 +273,7 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
                                   fontSize: 12,
                                   fontFamily: 'raleway',
                                   letterSpacing: 2),
-                              obscureText: true,
+                              obscureText: isObscure,
                             ),
                           ),
                           // Confirm Password
@@ -318,10 +330,12 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
                                   passwordController.text);
                             },
                             backgroundColor: const Color(0xff32B7E1),
-                            child: const Icon(
-                              Icons.arrow_forward_ios_outlined,
-                              color: Color(0xFF12172B),
-                              size: 40,
+                            child: const Center(
+                              child: Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                color: Color(0xFF12172B),
+                                size: 40,
+                              ),
                             ),
                           )
                         ]))
@@ -342,7 +356,7 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
           //     email: emailController.text,
           //     phone: int.parse(numberController.text))))
           .catchError((e) {
-        Fluttertoast.showToast(msg: e!.message);
+        Fluttertoast.showToast(msg: e.message);
       });
     }
     Navigator.of(context).popUntil((route) => route.isFirst);
@@ -356,6 +370,7 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
         id: user!.uid,
         name: nameEditingController.text,
         email: emailController.text,
+        profileimage: profileimageController.text,
         phone: int.parse(numberController.text));
     await firebaseFirestore
         .collection('users')
@@ -387,15 +402,23 @@ class UserMode {
   final String name;
   final int phone;
   final String email;
+  final String profileimage;
 
   UserMode(
       {this.id = '',
       required this.name,
       required this.email,
-      required this.phone});
+      required this.phone,
+      required this.profileimage});
 
   Map<String, dynamic> toJson() {
-    return {"id": id, "name": name, "email": email, "phone": phone};
+    return {
+      "id": id,
+      "name": name,
+      "email": email,
+      "phone": phone,
+      'profileimage': profileimage
+    };
   }
 
   factory UserMode.fromSnapshot(
@@ -405,7 +428,8 @@ class UserMode {
         id: document.id,
         name: datafet["name"],
         email: datafet["email"],
-        phone: datafet["phone"]);
+        phone: datafet["phone"],
+        profileimage: datafet["profileimage"]);
   }
 
   // receving data from firestore
@@ -414,17 +438,25 @@ class UserMode {
         id: map['id'],
         name: map['name'],
         email: map['email'],
-        phone: map['phone']);
+        phone: map['phone'],
+        profileimage: 'profileimage');
   }
 
   // sending data to firestore
   Map<String, dynamic> toMap() {
-    return {'id': id, 'email': email, 'name': name, 'phone': phone};
+    return {
+      'id': id,
+      'email': email,
+      'name': name,
+      'phone': phone,
+      'profileimage': profileimage,
+    };
   }
 
   static UserMode fromJson(Map<String, dynamic> json) => UserMode(
       name: json['name'],
       email: json['email'],
       phone: json['phone'],
+      profileimage: json['profileimage'],
       id: json['id']);
 }

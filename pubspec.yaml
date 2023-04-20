@@ -56,6 +56,10 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   connectivity_plus: ^3.0.2
   get: ^4.6.5
+  image_picker: ^0.8.6+1
+  firebase_storage: ^11.1.0
+  firebase_database: ^10.1.0
+  path: ^1.8.2
 
 
 
@@ -101,6 +105,7 @@ flutter:
       - assets/logo_aquesa.png
       - assets/success.gif
       - assets/succ.gif
+      - assets/account.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

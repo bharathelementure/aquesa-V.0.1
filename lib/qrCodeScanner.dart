@@ -2,7 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:otp_auth/Pages/navdrawer.dart' show NavDrawer;
+// import 'package:otp_auth/Pages/navdrawer.dart' show NavDrawer;
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrCodeScanner extends StatefulWidget {
@@ -29,8 +29,13 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFF72AFDE),
-        drawer: const NavDrawer(),
+        // drawer: const NavDrawer(),
         appBar: AppBar(
+          backgroundColor: const Color(0xFF72AFDE),
+          iconTheme: const IconThemeData(color: Colors.white),
+          elevation: 0,
+        ),
+        /*appBar: AppBar(
           /*centerTitle: true,title: DropdownButton(
       items: [DropdownMenuItem(child: Text('16 sep 2022',style:
     TextStyle(fontFamily: 'raleway',fontSize: 12,fontWeight: FontWeight.w500,
@@ -50,7 +55,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
                   size: 27,
                 ));
           }),
-        ),
+        ),*/
         resizeToAvoidBottomInset: false,
         body: Center(
           child: Stack(
@@ -64,8 +69,7 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
                       child: QRView(key: _globalKey, onQRViewCreated: qr)),
                   Center(
                     child: (result != null)
-                        ? Text(
-                            "Barcode Type: ${describeEnum(result!.format)} "
+                        ? Text("Barcode Type: ${describeEnum(result!.format)} "
                             "Data: ${result!.code}")
                         : const Text(
                             "Tap to scan",

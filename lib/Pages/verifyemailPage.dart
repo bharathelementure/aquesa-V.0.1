@@ -58,7 +58,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       setState(() => FirebaseAuth.instance.signOut());
     } catch (e) {
       Fluttertoast.showToast(
-          msg: '${e.toString}',
+          msg: 'Email verification required!',
           toastLength: Toast.LENGTH_LONG,
           backgroundColor: Colors.grey,
           textColor: Colors.black,

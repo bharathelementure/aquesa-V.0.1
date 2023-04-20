@@ -2,15 +2,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:otp_auth/Pages/navdrawer.dart';
+// import 'package:otp_auth/Pages/navdrawer.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
 // String? stringResponse;
 
 class SetDailyLimit extends StatefulWidget {
-  final volumeValue;
-  const SetDailyLimit({Key? key, this.volumeValue}) : super(key: key);
+  // final volumeValue;
+  const SetDailyLimit({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<SetDailyLimit> createState() => _SetDailyLimitState();
@@ -42,8 +44,22 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF3A70A1),
-      drawer: const NavDrawer(),
+      // drawer: const NavDrawer(),
       appBar: AppBar(
+        backgroundColor: const Color(0xFF3A70A1),
+        iconTheme: const IconThemeData(color: Colors.white),
+        elevation: 0,
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.notifications_outlined,
+                color: Color(0xFFFFFFFF),
+                size: 26,
+              ))
+        ],
+      ),
+      /*appBar: AppBar(
         centerTitle: true,
         //drop down items
         /*title: DropdownButton(items:
@@ -90,7 +106,7 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
             );
           },
         ),
-      ),
+      ),*/
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
@@ -116,7 +132,7 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                 backgroundColor: Color(0xFFFFFFFF),
               ),*/
               const SizedBox(
-                height: 30,
+                height: 36,
               ),
               const Text(
                 "Today's Consumption",
@@ -127,7 +143,7 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                     color: Color(0xFFFFFFFF)),
               ),
               const SizedBox(
-                height: 48,
+                height: 42,
               ),
               Container(
                   padding: const EdgeInsets.all(10),
@@ -219,9 +235,12 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                   30000,
                   60000
                 ], heightPercentages: [
-                  -widget.volumeValue * 0.0064,
+                  0.0064,
+                  0.0074,
+                  0.0084
+                  /*-widget.volumeValue * 0.0064,
                   -widget.volumeValue * 0.0074,
-                  -widget.volumeValue * 0.0084
+                  -widget.volumeValue * 0.0084*/
                 ], colors: [
                   const Color(0xFFAAD7FB),
                   const Color(0xFF94CFFF),
