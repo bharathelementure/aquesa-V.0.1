@@ -1,6 +1,5 @@
 // ignore_for_file: unused_local_variable, non_constant_identifier_names, unnecessary_null_comparison
 
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -25,7 +24,7 @@ Map? rty;
 
 class _GraphState extends State<Graph> {
   double volumeValue = 10;
-  final curr = FirebaseAuth.instance.currentUser!;
+  final curr = FirebaseAuth.instance.currentUser;
 
   DateTimeRange rangeDate = DateTimeRange(
       start: DateTime.now().subtract(const Duration(days: 7)),
@@ -43,7 +42,7 @@ class _GraphState extends State<Graph> {
     // final apicons = consumptionApi();
     Future<Object> consumptionApi() async {
       final body = {
-        'customerId': curr.uid,
+        'customerId': curr?.uid,
       };
       final jsonString = json.encode(body);
       final uri = Uri.parse(

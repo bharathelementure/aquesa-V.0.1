@@ -55,37 +55,6 @@ class _NavDrawerState extends State<NavDrawer> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          /*const Icon(
-                            Icons.account_circle_rounded,
-                            size: 72,
-                            color: Color(0xFFFFFFFF),
-                          ),*/
-                          // List of user can be find
-                          /*StreamBuilder<QuerySnapshot>(
-                              stream: FirebaseFirestore.instance
-                                  .collection('users')
-                                  .snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return const Text("Something went wrong");
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Text('Loading..');
-                                }
-                                return ListView(
-                                  children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                                    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                                    return ListTile(title: Text(data['name'],style: const TextStyle(
-                                              fontFamily: 'dmsans',
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 12,
-                                              color: Color(0xFFFFFFFF)),),
-                                    subtitle: Text(data['phone']),);
-                                  }
-                                ).toList().cast());
-                              })*/
                           // user data is provided by placing userId in doc()
                           FutureBuilder<DocumentSnapshot>(
                             future: FirebaseFirestore.instance
@@ -175,87 +144,6 @@ class _NavDrawerState extends State<NavDrawer> {
                               return const Text('Loading...');
                             },
                           ),
-                          // userdata by index[0]
-                          /*StreamBuilder(
-                            stream: FirebaseFirestore.instance
-                                .collection('users')
-                                .snapshots(),
-                            builder: (context,
-                                AsyncSnapshot<
-                                        QuerySnapshot<Map<String, dynamic>>>
-                                    snapshot) {
-                              if (!snapshot.hasData) {
-                                return const CircularProgressIndicator();
-                              }
-                              print(snapshot.requireData.docs
-                                  .asMap()[0]!['phone']
-                                  .toString());
-                              print(snapshot.requireData.docs);
-                              print('hello');
-                              print(curr);
-                              print(snapshot.data!.docs.asMap()[0]!['phone']);
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      // snapshot
-                                      //     .inState(ConnectionState.active)
-                                      //     .data!
-                                      //     .docs[1]
-                                      //     .get('name'),
-                                      snapshot.data!.docs[1]['name'],
-                                      style: const TextStyle(
-                                          fontFamily: 'dmsans',
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 12,
-                                          color: Color(0xFFFFFFFF)),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      snapshot.data!.docs[1]['phone']
-                                          .toString(),
-                                      // snapshot.requireData.docs
-                                      //     .asMap()[0]!['phone']
-                                      //     .toString(),
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'dmsans',
-                                          color: Color(0xFFABABAB)),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                          ),*/
-                          /*Text(
-                            curr.displayName!,
-                            // 'Nagathihalli Bharath',
-                            style: const TextStyle(
-                                fontFamily: 'dmsans',
-                                fontWeight: FontWeight.w700,
-                                fontSize: 12,
-                                color: Color(0xFFFFFFFF)),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            curr.phoneNumber!,
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'dmsans',
-                                color: Color(0xFFABABAB)),
-                          ),*/
-                          /*Row(crossAxisAlignment: CrossAxisAlignment.start,
-          children: [RadioListTile(title: Text('Owner'),value: "Owner",
-              groupValue: appliences, onChanged: (value){}),
-            RadioListTile(title: Text('Tenant',style: TextStyle(fontFamily: 'raleway',
-            fontWeight: FontWeight.w700,fontSize: 12,color: Color(0xFF181D27)),),
-                value: "Tenant", groupValue: appliences, onChanged: (value){})],)*/
                         ],
                       ),
                       const Spacer(),
@@ -394,7 +282,6 @@ class _NavDrawerState extends State<NavDrawer> {
               ),
               onTap: () {
                 FirebaseAuth.instance.signOut();
-                // retrive.signOut();
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -404,7 +291,7 @@ class _NavDrawerState extends State<NavDrawer> {
             const SizedBox(height: 150),
             const Center(
                 child: Text(
-              'Version 1.0',
+              'Version 1.0 beta',
               style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w300,
@@ -415,106 +302,4 @@ class _NavDrawerState extends State<NavDrawer> {
       ),
     );
   }
-
-  /*Future selectImage() {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: SizedBox(
-              height: 200,
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  children: [
-                    const Text('Select Image From !'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: () async {
-                            selectedImagePath = await selectImageFromGallery();
-                            print('Image_path:-');
-                            if (selectedImagePath != '') {
-                              Navigator.pop(context);
-                              setState(() {});
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('No Image Selected !')));
-                            }
-                          },
-                          child: Card(
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                children: const [
-                                  Icon(Icons.linked_camera_rounded, size: 50),
-                                  Text('Gallery')
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            selectedImagePath = await selectImageFromCamera();
-                            // print('Image_path:-');
-                            if (selectedImagePath != '') {
-                              Navigator.pop(context);
-                              setState(() {});
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('No Image Saelected !')));
-                            }
-                          },
-                          child: Card(
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                children: const [
-                                  Icon(
-                                    Icons.linked_camera_outlined,
-                                    size: 50,
-                                  ),
-                                  Text('Camera')
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-  }
-
-  selectImageFromGallery() async {
-    XFile? file = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 100);
-    if (file != null) {
-      return file.path;
-    } else {
-      return '';
-    }
-  }
-
-  selectImageFromCamera() async {
-    XFile? file = await ImagePicker()
-        .pickImage(source: ImageSource.camera, imageQuality: 100);
-    if (file != null) {
-      return file.path;
-    } else {
-      return '';
-    }
-  }*/
 }

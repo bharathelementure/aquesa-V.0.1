@@ -1,8 +1,12 @@
 // ignore_for_file: deprecated_member_use, prefer_typing_uninitialized_variables, file_names
 
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-// import 'package:otp_auth/Pages/navdrawer.dart';
+import 'package:intl/intl.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
@@ -19,8 +23,11 @@ class SetDailyLimit extends StatefulWidget {
 }
 
 String? stringResponse;
+Map? rty;
 
 class _SetDailyLimitState extends State<SetDailyLimit> {
+  final curr = FirebaseAuth.instance.currentUser;
+  final now = DateTime.now;
   Future apiConsumption() async {
     http.Response response;
     response =
@@ -38,6 +45,32 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
   void initState() {
     apiConsumption();
     super.initState();
+    Future<Object> consumptionApi() async {
+      final body = {
+        'customerId': curr?.uid,
+      };
+      final jsonString = json.encode(body);
+      final uri = Uri.parse(
+          "https://845gpwqyuf.execute-api.ap-south-1.amazonaws.com/totalConsumption");
+      final headers = {HttpHeaders.contentTypeHeader: "application/json"};
+      final http.Response response =
+          await http.post(uri, headers: headers, body: jsonString);
+      if (response.statusCode == 200) {
+        print(response.body);
+        Map<String, dynamic> resp = json.decode(response.body);
+        setState(() {
+          rty = resp;
+        });
+        return resp;
+      } else {
+        return const CircularProgressIndicator();
+      }
+    }
+
+    var adf = consumptionApi();
+    print(adf);
+
+    print("hii");
   }
 
   @override
@@ -132,7 +165,7 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                 backgroundColor: Color(0xFFFFFFFF),
               ),*/
               const SizedBox(
-                height: 36,
+                height: 26,
               ),
               const Text(
                 "Today's Consumption",
@@ -143,6 +176,18 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                     color: Color(0xFFFFFFFF)),
               ),
               const SizedBox(
+                height: 16,
+              ),
+              Text(
+                DateFormat('E, d MMM yyyy').format(DateTime.now()),
+                style: const TextStyle(
+                    fontFamily: 'dmsans',
+                    fontSize: 21,
+                    fontWeight: FontWeight.w200,
+                    color: Color(0xFFFFFFFF)),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
                 height: 42,
               ),
               Container(
@@ -151,8 +196,25 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
+                        children: [
+                          rty != null
+                              ? Text(
+                                  rty!["tatalconsumption"].toString(),
+                                  style: const TextStyle(
+                                      fontFamily: 'inter',
+                                      fontSize: 100,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xFFFFFFFF)),
+                                )
+                              : const Text(
+                                  '00.0',
+                                  style: TextStyle(
+                                      fontFamily: 'inter',
+                                      fontSize: 100,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xFFFFFFFF)),
+                                ),
+                          /*Text(
                             '69.7',
                             // stringResponse.toString(),
                             // widget.volumeValue.ceil().toString(),
@@ -161,7 +223,7 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                                 fontSize: 100,
                                 fontWeight: FontWeight.w700,
                                 color: Color(0xFFFFFFFF)),
-                          ),
+                          ),*/
                           /* const Text(
                             '%',
                             style: TextStyle(
@@ -184,8 +246,9 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                     fontSize: 25,
                     fontFamily: 'raleway',
                     color: Color(0xFFFFFFFF)),
+                textAlign: TextAlign.center,
               ),
-              const SizedBox(
+              /*const SizedBox(
                 height: 20,
               ),
               SizedBox(
@@ -225,9 +288,9 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                                     fontSize: 14,
                                     fontFamily: 'inter',
                                     fontWeight: FontWeight.w600),
-                              ))))),
+                              ))))),*/
               const SizedBox(
-                height: 121,
+                height: 155,
               ),
               WaveWidget(
                 config: CustomConfig(durations: [

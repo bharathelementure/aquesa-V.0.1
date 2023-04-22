@@ -8,17 +8,11 @@ import 'package:otp_auth/Pages/verifyemailPage.dart';
 import 'package:otp_auth/circularSetDailyLimit.dart';
 import 'package:otp_auth/darkOTP.dart';
 import 'package:otp_auth/home.dart';
-import 'package:otp_auth/nameDevice.dart';
-import 'package:otp_auth/notifications.dart';
-import 'package:otp_auth/otpVerifications.dart.dart';
-import 'package:otp_auth/ownerUtility.dart';
-import 'package:otp_auth/payment&invoices.dart';
 import 'package:otp_auth/qrCodeScanner.dart';
 import 'package:otp_auth/registration.dart';
 import 'package:otp_auth/setDilyLimit.dart';
 import 'package:otp_auth/splashScreen.dart';
 import 'package:otp_auth/thank_You.dart';
-import 'package:otp_auth/utility.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async {
   // print(message.data.toString());
@@ -41,16 +35,10 @@ Future<void> main() async {
       '/Graph': (context) => const Graph(),
       '/verifyemailPage': (context) => const VerifyEmailPage(),
       '/Registration': (context) => const Registration(),
-      '/OTPVerification': (context) => const MyVerify(),
       '/darkOTP': (context) => const DarkOTP(),
       '/circularsetDailyLimit': (context) => const CircularSetDailyLimit(),
-      '/utility': (context) => const Utility(),
-      '/edit_update':(context) => const EditUpdate(),
-      '/setDaily':(context) => const SetDailyLimit(),
-      '/ownerutility': (context) => const OwnerUtility(),
-      '/nameDevice': (context) => const NameDevice(),
-      '/paymentsInvoices': (context) => const PaymentInvoices(),
-      '/notifications': (context) => const Notifications(),
+      '/edit_update': (context) => const EditUpdate(),
+      '/setDaily': (context) => const SetDailyLimit(),
       '/graph': (context) => const Graph(),
       '/qrCodeScanner': (context) => const QrCodeScanner(),
       '/thank_you': (context) => const ThankYou(),
