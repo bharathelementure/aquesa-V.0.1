@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:otp_auth/Pages/navdrawer.dart';
 import 'package:otp_auth/controllers/home_controllers/currentdate_Titledate.dart';
 import 'package:otp_auth/controllers/home_controllers/measurment_graph.dart';
-import 'package:otp_auth/dart_Utils.dart' as date_util;
+import 'package:otp_auth/utils/dart_Utils.dart' as date_util;
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -34,7 +34,7 @@ class _GraphState extends State<Graph> {
   late ScrollController scrollController;
   List<DateTime> currentMonthList = List.empty();
   DateTime currentDateTime = DateTime.now();
-  List<String> todos = <String>[];
+  // List<String> todos = <String>[];
 
   @override
   void initState() {
@@ -70,7 +70,7 @@ class _GraphState extends State<Graph> {
     currentMonthList.sort((a, b) => a.day.compareTo(b.day));
     currentMonthList = currentMonthList.toSet().toList();
     scrollController =
-        ScrollController(initialScrollOffset: 50.0 * currentDateTime.day);
+        ScrollController(initialScrollOffset: 45.0 * currentDateTime.day);
   }
 
   //current date List
@@ -368,9 +368,9 @@ class _GraphState extends State<Graph> {
                         ),
                         const SizedBox(height: 10),
                         LitersOftext(),
-                        const SizedBox(
+                        SizedBox(
                           height: 280,
-                          child: MeasurmentGraph(),
+                          child: MeasurmentGraph(rangeDate: rangeDate),
                         ),
                         const Divider(
                           thickness: 3,

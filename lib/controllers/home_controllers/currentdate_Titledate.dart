@@ -1,5 +1,6 @@
+
 import 'package:flutter/material.dart';
-import 'package:otp_auth/dart_Utils.dart' as date_util;
+import 'package:otp_auth/utils/dart_Utils.dart' as date_util;
 
 class CurrentDateTitleDate extends StatelessWidget {
   const CurrentDateTitleDate({

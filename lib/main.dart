@@ -2,17 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:otp_auth/Pages/authPage.dart';
 import 'package:otp_auth/Pages/edit_update.dart';
 import 'package:otp_auth/Pages/verifyemailPage.dart';
-import 'package:otp_auth/circularSetDailyLimit.dart';
-import 'package:otp_auth/darkOTP.dart';
-import 'package:otp_auth/home.dart';
-import 'package:otp_auth/qrCodeScanner.dart';
-import 'package:otp_auth/registration.dart';
-import 'package:otp_auth/setDilyLimit.dart';
-import 'package:otp_auth/splashScreen.dart';
-import 'package:otp_auth/thank_You.dart';
+import 'package:otp_auth/Screens/circularSetDailyLimit.dart';
+import 'package:otp_auth/Screens/home.dart';
+import 'package:otp_auth/Screens/qrCodeScanner.dart';
+import 'package:otp_auth/Screens/registration.dart';
+import 'package:otp_auth/Screens/setDilyLimit.dart';
+import 'package:otp_auth/Screens/splashScreen.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async {
   // print(message.data.toString());
@@ -23,6 +22,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  await SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   runApp(MaterialApp(
     initialRoute: '/SplashScreen',
@@ -35,13 +36,11 @@ Future<void> main() async {
       '/Graph': (context) => const Graph(),
       '/verifyemailPage': (context) => const VerifyEmailPage(),
       '/Registration': (context) => const Registration(),
-      '/darkOTP': (context) => const DarkOTP(),
       '/circularsetDailyLimit': (context) => const CircularSetDailyLimit(),
       '/edit_update': (context) => const EditUpdate(),
       '/setDaily': (context) => const SetDailyLimit(),
       '/graph': (context) => const Graph(),
       '/qrCodeScanner': (context) => const QrCodeScanner(),
-      '/thank_you': (context) => const ThankYou(),
     },
   ));
 }

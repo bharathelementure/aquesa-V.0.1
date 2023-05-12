@@ -4,11 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:otp_auth/home.dart';
+import 'package:otp_auth/Screens/home.dart';
+import 'package:otp_auth/controllers/save_localy.dart';
+import 'package:otp_auth/models/userModels.dart';
 import 'package:path/path.dart';
 
 class EditUpdate extends StatefulWidget {
@@ -19,11 +21,11 @@ class EditUpdate extends StatefulWidget {
 }
 
 class _EditUpdateState extends State<EditUpdate> {
+  // late UserMode reuse;
+
   // camera
   File? file;
   String selectedImagePath = "";
-  final ref = FirebaseDatabase.instance.ref('users');
-  DatabaseReference refre = FirebaseDatabase.instance.ref().child('users');
 
   final emailController = TextEditingController();
   final nameEditingController = TextEditingController();
@@ -62,7 +64,6 @@ class _EditUpdateState extends State<EditUpdate> {
                     fontFamily: 'raleway',
                     fontWeight: FontWeight.w500),
               ),
-              //name
               const SizedBox(height: 20),
               FutureBuilder<DocumentSnapshot>(
                 future: FirebaseFirestore.instance
@@ -90,16 +91,25 @@ class _EditUpdateState extends State<EditUpdate> {
                     Map<String, dynamic> dataread =
                         snapshot.data!.data() as Map<String, dynamic>;
                     final namedit =
-                        TextEditingController(text: dataread['name']);
+                        TextEditingController(text: dataread['displayName']);
                     final phonedit = TextEditingController(
-                        text: dataread['phone'].toString());
+                        text: dataread['phoneNumber'].toString());
                     final emailedit =
                         TextEditingController(text: dataread['email']);
-                    final profileedit = Image.network(dataread['profileimage']);
+                    final profileedit = Image.network(dataread['photoURL']);
+                    // LocalStorage
+                    FirebaseDatabase.instance.setPersistenceEnabled(true);
                     return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          // ProfileController
                           Stack(children: [
+                            // ProfileWidget(
+                            //     profileimage: dataread['profileimage'],
+                            //     isEdit: true,
+                            //     onClicked: () {
+                            //       selectImage(context);
+                            //     }),
                             GestureDetector(
                               onTap: () {
                                 selectImage(context);
@@ -117,7 +127,7 @@ class _EditUpdateState extends State<EditUpdate> {
                                               setState(() {});
                                             },
                                             child: Image.network(
-                                              '${dataread['profileimage']}',
+                                              '${dataread['photoURL']}',
                                               scale: 30,
                                               fit: BoxFit.cover,
                                               errorBuilder:
@@ -153,11 +163,12 @@ class _EditUpdateState extends State<EditUpdate> {
                               ),
                             ),
                             Positioned(
-                              bottom: -5,
-                              right: -5,
+                              bottom: -15,
+                              right: -10,
                               child: IconButton(
                                   onPressed: () {
                                     selectImage(context);
+                                    setState(() {});
                                   },
                                   icon: const Icon(
                                     Icons.linked_camera_rounded,
@@ -167,6 +178,7 @@ class _EditUpdateState extends State<EditUpdate> {
                             ),
                           ]),
                           const SizedBox(height: 10),
+                          // Namecontroller
                           Container(
                             padding: const EdgeInsets.only(left: 25, right: 25),
                             child: TextFormField(
@@ -314,23 +326,27 @@ class _EditUpdateState extends State<EditUpdate> {
                             height: 47,
                             child: ElevatedButton(
                                 onPressed: () async {
+                                  saveUserOffline(UserMode.fromjson(dataread));
                                   updateProfile(context);
                                   final String editname = namedit.text;
                                   final int editphone =
                                       int.parse(phonedit.text);
-                                  final String editemail = emailedit.text;
+                                  // final String editemail = emailedit.text;
                                   await FirebaseFirestore.instance
                                       .collection('users')
                                       .doc(curr?.uid)
                                       .update({
-                                        'name': editname,
-                                        'phone': editphone,
-                                        'email': editemail
+                                        'displayName': editname,
+                                        'phoneNumber': editphone,
+                                        // 'email': editemail
                                       })
-                                      .then((value) =>
-                                          print('Updated Successfully'))
+                                      .then((value) => Fluttertoast.showToast(
+                                          msg: 'Updated successfully'))
                                       .catchError((e) =>
-                                          print('Failed to update : $e'));
+                                          Fluttertoast.showToast(msg: e));
+                                  await Future.delayed(
+                                      const Duration(seconds: 1));
+                                  if (mounted) return;
                                   Navigator.pop(context);
                                   var navi = await Navigator.push(
                                       context,
@@ -359,24 +375,17 @@ class _EditUpdateState extends State<EditUpdate> {
                                         constraints: const BoxConstraints(
                                             minWidth: 140, minHeight: 47),
                                         alignment: Alignment.center,
-                                        child: const Text(
-                                          'Save',
+                                        child: Text(
+                                          namedit.text.isEmpty
+                                              ? 'Save'
+                                              : 'Update',
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Color(0xFFFFFFFF),
                                               fontSize: 14,
                                               fontFamily: 'inter',
                                               fontWeight: FontWeight.w600),
-                                        )))
-                                /*backgroundColor: const Color(0xff32B7E1),
-                            child: const Center(
-                              child: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                                color: Color(0xFF12172B),
-                                size: 40,
-                              ),
-                            ),*/
-                                ),
+                                        )))),
                           )
                         ]);
                   }
@@ -397,12 +406,11 @@ class _EditUpdateState extends State<EditUpdate> {
   selectImageFromGallery() async {
     XFile? xfile = await ImagePicker()
         .pickImage(source: ImageSource.gallery, imageQuality: 100);
-    print("file" + xfile!.path);
-    file = File(xfile.path);
+    // print("file" + xfile!.path);
+    file = File(xfile!.path);
     // setState(() {});
     if (file != null) {
-      // uploadImage(context);
-      print(file!.path);
+      // print(file!.path);
       return file!.path;
     } else {
       return '';
@@ -412,12 +420,12 @@ class _EditUpdateState extends State<EditUpdate> {
   selectImageFromCamera() async {
     XFile? xfile = await ImagePicker()
         .pickImage(source: ImageSource.camera, imageQuality: 100);
-    print("file" + xfile!.path);
-    file = File(xfile.path);
+    // print("file" + xfile!.path);
+    file = File(xfile!.path);
     // setState(() {});
     if (file != null) {
       // uploadImage(context);
-      print(file!.path);
+      // print(file!.path);
       return file!.path;
     } else {
       return '';
@@ -425,10 +433,10 @@ class _EditUpdateState extends State<EditUpdate> {
   }
 
   updateProfile(BuildContext context) async {
-    Map<String, dynamic> map = Map();
+    Map<String, dynamic> map = {};
     if (file != null) {
       String url = await uploadImage();
-      map['profileimage'] = url;
+      map['photoURL'] = url;
     }
     FirebaseFirestore.instance
         .collection("users")
@@ -467,9 +475,8 @@ class _EditUpdateState extends State<EditUpdate> {
                         GestureDetector(
                           onTap: () async {
                             selectedImagePath = await selectImageFromGallery();
-                            print('Image_path:-');
                             if (selectedImagePath != '') {
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                               setState(() {});
                             } else {
                               Fluttertoast.showToast(msg: 'No image selected!');
@@ -481,7 +488,7 @@ class _EditUpdateState extends State<EditUpdate> {
                               padding: const EdgeInsets.all(8),
                               child: Column(
                                 children: const [
-                                  Icon(Icons.linked_camera_rounded, size: 50),
+                                  Icon(Icons.image_outlined, size: 50),
                                   Text('Gallery')
                                 ],
                               ),
@@ -491,14 +498,12 @@ class _EditUpdateState extends State<EditUpdate> {
                         GestureDetector(
                           onTap: () async {
                             selectedImagePath = await selectImageFromCamera();
-                            // print('Image_path:-');
+                            print('Image_path:-');
                             if (selectedImagePath != '') {
-                              Navigator.pop(context);
+                              Navigator.of(context).pop();
                               setState(() {});
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('No Image Saelected !')));
+                              Fluttertoast.showToast(msg: 'No image selected!');
                             }
                           },
                           child: Card(
@@ -526,6 +531,4 @@ class _EditUpdateState extends State<EditUpdate> {
           );
         });
   }
-
-  SessionController() {}
 }

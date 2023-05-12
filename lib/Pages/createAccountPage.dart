@@ -3,6 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:otp_auth/models/userModels.dart';
 
 class CreateAcountPage extends StatefulWidget {
   final VoidCallback onClickedSignIn;
@@ -351,10 +352,6 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => postDetailFirestore())
-          // userCreated(UserMode(
-          //     name: nameEditingController.text,
-          //     email: emailController.text,
-          //     phone: int.parse(numberController.text))))
           .catchError((e) {
         Fluttertoast.showToast(msg: e.message);
       });
@@ -368,10 +365,10 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
 
     UserMode userMode = UserMode(
         id: user!.uid,
-        name: nameEditingController.text,
+        displayName: nameEditingController.text,
         email: emailController.text,
-        profileimage: profileimageController.text,
-        phone: int.parse(numberController.text));
+        photoURL: profileimageController.text,
+        phoneNumber: int.parse(numberController.text));
     await firebaseFirestore
         .collection('users')
         .doc(user.uid)
@@ -389,74 +386,10 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
 
   Future<void> addUser(UserMode user) {
     return FirebaseFirestore.instance.collection('users').add({
-      'name': nameEditingController,
-      'phone': numberController,
+      'displayName': nameEditingController,
+      'phoneNumber': numberController,
       'email': emailController,
       'id': '',
     });
   }
-}
-
-class UserMode {
-  String id;
-  final String name;
-  final int phone;
-  final String email;
-  final String profileimage;
-
-  UserMode(
-      {this.id = '',
-      required this.name,
-      required this.email,
-      required this.phone,
-      required this.profileimage});
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "name": name,
-      "email": email,
-      "phone": phone,
-      'profileimage': profileimage
-    };
-  }
-
-  factory UserMode.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> document) {
-    final datafet = document.data()!;
-    return UserMode(
-        id: document.id,
-        name: datafet["name"],
-        email: datafet["email"],
-        phone: datafet["phone"],
-        profileimage: datafet["profileimage"]);
-  }
-
-  // receving data from firestore
-  factory UserMode.fromMap(map) {
-    return UserMode(
-        id: map['id'],
-        name: map['name'],
-        email: map['email'],
-        phone: map['phone'],
-        profileimage: 'profileimage');
-  }
-
-  // sending data to firestore
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'email': email,
-      'name': name,
-      'phone': phone,
-      'profileimage': profileimage,
-    };
-  }
-
-  static UserMode fromJson(Map<String, dynamic> json) => UserMode(
-      name: json['name'],
-      email: json['email'],
-      phone: json['phone'],
-      profileimage: json['profileimage'],
-      id: json['id']);
 }

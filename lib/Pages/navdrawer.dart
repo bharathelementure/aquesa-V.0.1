@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:otp_auth/registration.dart';
 
 class NavDrawer extends StatefulWidget {
   // final String docId;
@@ -19,7 +18,7 @@ class _NavDrawerState extends State<NavDrawer> {
   double volumeValue = 10;
 
   // camera
-  String selectedImagePath = "";
+  // String selectedImagePath = "";
 
   // current user data fetched
   final curr = FirebaseAuth.instance.currentUser;
@@ -93,7 +92,7 @@ class _NavDrawerState extends State<NavDrawer> {
                                           borderRadius:
                                               BorderRadius.circular(100),
                                           child: Image.network(
-                                            '${datare['profileimage']}',
+                                            '${datare['photoURL']}',
                                             scale: 30,
                                             fit: BoxFit.cover,
                                             errorBuilder: (BuildContext context,
@@ -120,7 +119,7 @@ class _NavDrawerState extends State<NavDrawer> {
                                           ),
                                     ),
                                     Text(
-                                      '${datare['name']}',
+                                      '${datare['displayName']}',
                                       style: const TextStyle(
                                           fontFamily: 'dmsans',
                                           fontWeight: FontWeight.w700,
@@ -131,7 +130,7 @@ class _NavDrawerState extends State<NavDrawer> {
                                       height: 10,
                                     ),
                                     Text(
-                                      '${datare['phone']}',
+                                      '${datare['phoneNumber']}',
                                       style: const TextStyle(
                                           fontFamily: 'dmsans',
                                           fontWeight: FontWeight.w700,
@@ -280,12 +279,12 @@ class _NavDrawerState extends State<NavDrawer> {
                     fontFamily: 'dmsans',
                     color: Color(0xFF181D27)),
               ),
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Registration()));
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => const Registration()));
               },
             ),
             const SizedBox(height: 150),

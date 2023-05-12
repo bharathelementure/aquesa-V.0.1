@@ -1,4 +1,3 @@
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -6,21 +5,25 @@ import 'package:intl/intl.dart';
 class MeasurmentGraph extends StatelessWidget {
   const MeasurmentGraph({
     super.key,
+    required this.rangeDate,
   });
+
+  final DateTimeRange rangeDate;
 
   @override
   Widget build(BuildContext context) {
     final bool showTouchTooltip;
-    final double? interval;
-
+    int start = int.parse('${rangeDate.start.day}');
+    int end = int.parse('${rangeDate.end.day}');
+    // final double? interval;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: LineChart(
           swapAnimationCurve: Curves.easeInOut,
           swapAnimationDuration: const Duration(milliseconds: 400),
           LineChartData(
-              minX: 1,
-              maxX: 8,
+              minX: start.toDouble(),
+              maxX: end.toDouble(),
               minY: 0,
               maxY: 6,
               titlesData: FlTitlesData(
@@ -56,13 +59,11 @@ class MeasurmentGraph extends StatelessWidget {
                     spots: [
                       const FlSpot(0, 6),
                       const FlSpot(1, 5),
-                      const FlSpot(2, 4),
-                      const FlSpot(3, 3),
-                      const FlSpot(4, 6),
-                      const FlSpot(5, 5),
+                      const FlSpot(2, 6),
+                      const FlSpot(4, 5),
                       const FlSpot(6, 4),
-                      const FlSpot(7, 6),
-                      const FlSpot(8, 3),
+                      const FlSpot(8, 6),
+                      const FlSpot(9.5, 3),
                       const FlSpot(11, 4)
                     ],
                     isCurved: true,

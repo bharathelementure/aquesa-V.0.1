@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:otp_auth/Pages/createAccountPage.dart';
-import 'package:otp_auth/registration.dart';
+import 'package:otp_auth/Screens/registration.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
