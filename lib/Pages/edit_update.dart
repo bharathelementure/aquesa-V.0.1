@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -96,7 +98,7 @@ class _EditUpdateState extends State<EditUpdate> {
                         text: dataread['phoneNumber'].toString());
                     final emailedit =
                         TextEditingController(text: dataread['email']);
-                    final profileedit = Image.network(dataread['photoURL']);
+                    // final profileedit = Image.network(dataread['photoURL']);
                     // LocalStorage
                     FirebaseDatabase.instance.setPersistenceEnabled(true);
                     return Column(
@@ -482,12 +484,12 @@ class _EditUpdateState extends State<EditUpdate> {
                               Fluttertoast.showToast(msg: 'No image selected!');
                             }
                           },
-                          child: Card(
+                          child: const Card(
                             elevation: 5,
                             child: Padding(
-                              padding: const EdgeInsets.all(8),
+                              padding: EdgeInsets.all(8),
                               child: Column(
-                                children: const [
+                                children: [
                                   Icon(Icons.image_outlined, size: 50),
                                   Text('Gallery')
                                 ],
@@ -506,12 +508,12 @@ class _EditUpdateState extends State<EditUpdate> {
                               Fluttertoast.showToast(msg: 'No image selected!');
                             }
                           },
-                          child: Card(
+                          child: const Card(
                             elevation: 5,
                             child: Padding(
-                              padding: const EdgeInsets.all(8),
+                              padding: EdgeInsets.all(8),
                               child: Column(
-                                children: const [
+                                children: [
                                   Icon(
                                     Icons.linked_camera_outlined,
                                     size: 50,

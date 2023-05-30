@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, body_might_complete_normally_catch_error
+
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

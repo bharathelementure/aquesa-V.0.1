@@ -6,6 +6,8 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
+import '../controllers/pop_notification.dart';
+
 class CircularSetDailyLimit extends StatefulWidget {
   const CircularSetDailyLimit({Key? key}) : super(key: key);
 
@@ -30,54 +32,36 @@ class _CircularSetDailyLimitState extends State<CircularSetDailyLimit> {
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: Color(0xFF2A3F74)),
           elevation: 0,
-          actions: [
-            IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.notifications_outlined,
-                  color: Color(0xFF2A3F74),
-                  size: 26,
-                ))
-          ],
-        ),
-        /*appBar: AppBar(
-          elevation: 0,
-          actions: [
+          actions: const [
             PopUpMen(
-              menuList: const [
-                /*
-            PopupMenuItem(child: ListTile(
-              leading: Icon(CupertinoIcons.person),
-              title: Text('My Profile'),
-            )),
-            PopupMenuItem(child: ListTile(
-              leading: Icon(CupertinoIcons.square_arrow_left),
-              title: Text('Log Out'),
-            )),
-            PopupMenuDivider(),
-            PopupMenuItem(child: Text('Settings'))*/
-              ],
-              icon: IconButton(
-                onPressed: () {},
-                icon: const Icon(
+                color: Color(0xFFEDEBEB),
+                icon: Icon(
                   Icons.notifications_outlined,
                   color: Color(0xFF2A3F74),
                   size: 26,
                 ),
-              ),
-            ),
+                menuList: [
+                  PopupMenuItem(
+                      child: ListTile(
+                    title: Text(
+                      'No Notifications',
+                      style: TextStyle(
+                          color: Color(0xFF7B7A7A),
+                          fontFamily: 'raleway',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ))
+                ]),
+            // IconButton(
+            //     onPressed: () {},
+            //     icon: const Icon(
+            //       Icons.notifications_outlined,
+            //       color: Color(0xFF2A3F74),
+            //       size: 26,
+            //     ))
           ],
-          backgroundColor: const Color(0xFFFFFFFF),
-          leading: Builder(builder: (context) {
-            return IconButton(
-                onPressed: () => Scaffold.of(context).openDrawer(),
-                icon: const Icon(
-                  Icons.menu,
-                  color: Color(0xFF5075A9),
-                  size: 27,
-                ));
-          }),
-        ),*/
+        ),
         resizeToAvoidBottomInset: false,
         body: Stack(children: [
           Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -218,21 +202,5 @@ class _CircularSetDailyLimitState extends State<CircularSetDailyLimit> {
             )
           ])
         ]));
-  }
-}
-
-class PopUpMen extends StatelessWidget {
-  final List<PopupMenuEntry> menuList;
-  final Widget? icon;
-  const PopUpMen({Key? key, required this.menuList, this.icon})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton(
-      itemBuilder: ((context) => menuList),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      icon: icon,
-    );
   }
 }

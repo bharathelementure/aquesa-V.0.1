@@ -160,7 +160,7 @@ class _NavDrawerState extends State<NavDrawer> {
                   )),
             ),
             // Main graph
-            ListTile(
+            /*ListTile(
               // trailing: const Icon(Icons.arrow_forward_ios_rounded,
               // size: 20, color: Colors.black),
               leading: const Icon(
@@ -185,7 +185,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 // }
                 Navigator.pushNamed(context, '/graph');
               },
-            ),
+            ),*/
             // add qrcode
             ListTile(
               leading: const Icon(
@@ -241,7 +241,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 color: Colors.black,
               ),
               title: const Text(
-                'Today\'s Consumtion',
+                'Today\'s Consumption',
                 style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,

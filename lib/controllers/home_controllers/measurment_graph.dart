@@ -1,8 +1,11 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+// import 'package:otp_auth/controllers/graph_api.dart';
 
-class MeasurmentGraph extends StatelessWidget {
+class MeasurmentGraph extends StatefulWidget {
   const MeasurmentGraph({
     super.key,
     required this.rangeDate,
@@ -11,10 +14,21 @@ class MeasurmentGraph extends StatelessWidget {
   final DateTimeRange rangeDate;
 
   @override
+  State<MeasurmentGraph> createState() => _MeasurmentGraphState();
+}
+
+class _MeasurmentGraphState extends State<MeasurmentGraph> {
+  @override
+  void initState() {
+    // apiConsumption();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final bool showTouchTooltip;
-    int start = int.parse('${rangeDate.start.day}');
-    int end = int.parse('${rangeDate.end.day}');
+    int start = int.parse('${widget.rangeDate.start.day}');
+    int end = int.parse('${widget.rangeDate.end.day}');
     // final double? interval;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
@@ -39,9 +53,10 @@ class MeasurmentGraph extends StatelessWidget {
                     tooltipBgColor: const Color(0xff2A3F74),
                     getTooltipItems: (touchedSpots) => touchedSpots
                         .map((spot) => LineTooltipItem(
-                              '${NumberFormat.simpleCurrency().format(spot.x)}\n'
-                              '${spot.y.toInt()}:00',
-                              const TextStyle(),
+                              '${NumberFormat.compact().format(spot.y * 100)} L',
+                              // '${NumberFormat.simpleCurrency().format(spot.x)}',
+                              // '${spot.y.toInt()}:00',
+                              const TextStyle(color: Color(0xffFFFFFF)),
                             ))
                         .toList(),
                   )),
@@ -57,14 +72,25 @@ class MeasurmentGraph extends StatelessWidget {
               lineBarsData: [
                 LineChartBarData(
                     spots: [
-                      const FlSpot(0, 6),
-                      const FlSpot(1, 5),
-                      const FlSpot(2, 6),
-                      const FlSpot(4, 5),
-                      const FlSpot(6, 4),
-                      const FlSpot(8, 6),
-                      const FlSpot(9.5, 3),
-                      const FlSpot(11, 4)
+                      const FlSpot(0, 5.98),
+                      const FlSpot(1, 4.356),
+                      const FlSpot(2, 5.093),
+                      const FlSpot(3, 2.349),
+                      const FlSpot(4, 4.986),
+                      const FlSpot(5, 1.341),
+                      const FlSpot(6, 3.451),
+                      const FlSpot(7, 2.0934),
+                      const FlSpot(8, 5.8923),
+                      const FlSpot(9, 2.5641),
+                      const FlSpot(10, 5.510),
+                      const FlSpot(11, 3.462),
+                      const FlSpot(12, 5.018),
+                      const FlSpot(13, 3.156),
+                      const FlSpot(14, 5.0153),
+                      const FlSpot(15, 5.2671),
+                      const FlSpot(16, 1.561),
+                      const FlSpot(17, 5.0821),
+                      const FlSpot(18, 3.947),
                     ],
                     isCurved: true,
                     barWidth: 3,

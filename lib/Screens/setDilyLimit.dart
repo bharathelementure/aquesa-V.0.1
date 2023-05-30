@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, prefer_typing_uninitialized_variables, file_names
+// ignore_for_file: deprecated_member_use, prefer_typing_uninitialized_variables, file_names, avoid_print
 
 import 'dart:convert';
 import 'dart:io';
@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
+
+import '../controllers/pop_notification.dart';
 
 // String? stringResponse;
 
@@ -28,7 +30,7 @@ Map? rty;
 class _SetDailyLimitState extends State<SetDailyLimit> {
   final curr = FirebaseAuth.instance.currentUser;
   final now = DateTime.now;
-  Future apiConsumption() async {
+  /*Future apiConsumption() async {
     http.Response response;
     response =
         await http.post(Uri.parse("http://192.168.0.116:8000/watermeter"));
@@ -39,11 +41,11 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
     } else {
       return const CircularProgressIndicator();
     }
-  }
+  }*/
 
   @override
   void initState() {
-    apiConsumption();
+    // apiConsumption();
     super.initState();
     Future<Object> consumptionApi() async {
       final body = {
@@ -82,14 +84,34 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
         backgroundColor: const Color(0xFF3A70A1),
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
+        actions: const [
+          PopUpMen(
+              color: Color(0xFFEDEBEB),
+              icon: Icon(
                 Icons.notifications_outlined,
-                color: Color(0xFFFFFFFF),
+                color: Color(0xFF2A3F74),
                 size: 26,
-              ))
+              ),
+              menuList: [
+                PopupMenuItem(
+                    child: ListTile(
+                  title: Text(
+                    'No Notifications',
+                    style: TextStyle(
+                        color: Color(0xFF7B7A7A),
+                        fontFamily: 'raleway',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ))
+              ]),
+          // IconButton(
+          //     onPressed: () {},
+          //     icon: const Icon(
+          //       Icons.notifications_outlined,
+          //       color: Color(0xFFFFFFFF),
+          //       size: 26,
+          //     ))
         ],
       ),
       /*appBar: AppBar(
@@ -146,24 +168,6 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              /*WaveWidget(
-                config: CustomConfig(durations: [
-                  18000,
-                  30000,
-                  60000
-                ], heightPercentages: [
-                  0.65,
-                  0.66,
-                  0.68
-                ], colors: [
-                  Color(0xFFAAD7FB),
-                  Color(0xFF94CFFF),
-                  Color(0xFFA5D4F9)
-                ]),
-                size: Size(double.infinity, 200),
-                waveAmplitude: 35,
-                backgroundColor: Color(0xFFFFFFFF),
-              ),*/
               const SizedBox(
                 height: 26,
               ),
@@ -197,20 +201,12 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          rty != null
-                              ? Text(
-                                  rty!["tatalconsumption"].toString(),
+                          
+                              Text(rty != null ?
+                                  rty!["tatalconsumption"].toString() : "00.0",
                                   style: const TextStyle(
                                       fontFamily: 'inter',
-                                      fontSize: 100,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xFFFFFFFF)),
-                                )
-                              : const Text(
-                                  '00.0',
-                                  style: TextStyle(
-                                      fontFamily: 'inter',
-                                      fontSize: 100,
+                                      fontSize: 80,
                                       fontWeight: FontWeight.w700,
                                       color: Color(0xFFFFFFFF)),
                                 ),
@@ -248,47 +244,6 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                     color: Color(0xFFFFFFFF)),
                 textAlign: TextAlign.center,
               ),
-              /*const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                  width: 234,
-                  height: 47,
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        Navigator.of(context).pop();
-                        var navi = await Navigator.pushNamed(
-                            context, '/circularsetDailyLimit');
-                        if (navi == true || navi == null) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/graph', (Route<dynamic> route) => false);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25)),
-                          padding: const EdgeInsets.all(0)),
-                      child: Ink(
-                          decoration: const BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                                Color(0xFF6FADE0),
-                                Color(0xFF4483D0)
-                              ]),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25))),
-                          child: Container(
-                              constraints: const BoxConstraints(
-                                  minWidth: 234, minHeight: 47),
-                              alignment: Alignment.center,
-                              child: const Text(
-                                'RESET LIMIT',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Color(0xFFFFFFFF),
-                                    fontSize: 14,
-                                    fontFamily: 'inter',
-                                    fontWeight: FontWeight.w600),
-                              ))))),*/
               const SizedBox(
                 height: 155,
               ),
@@ -317,22 +272,6 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
           )
         ],
       ),
-    );
-  }
-}
-
-class PopUpMen extends StatelessWidget {
-  final List<PopupMenuEntry> menuList;
-  final Widget? icon;
-  const PopUpMen({Key? key, required this.menuList, this.icon})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton(
-      itemBuilder: ((context) => menuList),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      icon: icon,
     );
   }
 }

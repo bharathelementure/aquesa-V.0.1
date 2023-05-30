@@ -44,6 +44,9 @@ dependencies:
   path: ^1.8.2
   shared_preferences: ^2.1.0
   path_provider: ^2.0.14
+  calendar_timeline: ^1.1.2
+  date_picker_timeline: ^1.2.3
+  date_time_line: ^0.0.3
 
 dev_dependencies:
   flutter_test:

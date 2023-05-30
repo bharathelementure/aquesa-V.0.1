@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -55,12 +57,12 @@ Future pickoptionalImage(context) {
                             Fluttertoast.showToast(msg: 'Image not selected !');
                           }
                         },
-                        child: Card(
+                        child: const Card(
                           elevation: 5,
                           child: Padding(
-                            padding: const EdgeInsets.all(8),
+                            padding: EdgeInsets.all(8),
                             child: Column(
-                              children: const [
+                              children: [
                                 Icon(Icons.image_outlined, size: 50),
                                 Text('Gallery')
                               ],
@@ -77,12 +79,12 @@ Future pickoptionalImage(context) {
                             Fluttertoast.showToast(msg: 'Image not selected !');
                           }
                         },
-                        child: Card(
+                        child: const Card(
                           elevation: 5,
                           child: Padding(
-                            padding: const EdgeInsets.all(8),
+                            padding: EdgeInsets.all(8),
                             child: Column(
-                              children: const [
+                              children: [
                                 Icon(Icons.linked_camera, size: 50),
                                 Text('Camera')
                               ],

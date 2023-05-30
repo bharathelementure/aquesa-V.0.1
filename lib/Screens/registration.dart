@@ -77,13 +77,13 @@ class _RegistrationState extends State<Registration> {
                 backgroundColor: const Color(0xFF12172B),
                 body: NestedScrollView(
                   headerSliverBuilder: (context, innerBOxIsScrolled) => [
-                    SliverAppBar(
+                    const SliverAppBar(
                         automaticallyImplyLeading: false,
                         pinned: true,
                         floating: true,
                         flexibleSpace: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children: const [
+                            children: [
                               TabBar(
                                   labelColor: Color(0xffFFFFFF),
                                   unselectedLabelColor: Color(0xff676C77),
