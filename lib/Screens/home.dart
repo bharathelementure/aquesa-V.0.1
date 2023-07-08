@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable, non_constant_identifier_names, unnecessary_null_comparison
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -22,7 +20,7 @@ class Graph extends StatefulWidget {
   State<Graph> createState() => _GraphState();
 }
 
-// String? stringResponseconsump;
+String? stringResponseconsump;
 Map? rty;
 
 class _GraphState extends State<Graph> {
@@ -64,11 +62,30 @@ class _GraphState extends State<Graph> {
     }
   }
 
+  Future apiConsumption() async {
+    final rdata = {"customer_id": "${curr!.uid},$selectedValue"};
+    final jsonString = json.encode(rdata);
+    final uir = Uri.parse("http://192.168.0.126:8080/csm");
+    http.Response response;
+    response = await http.post(uir, body: jsonString);
+    print(response.body);
+    if (response.statusCode == 200) {
+      setState(() {
+        stringResponseconsump = response.body;
+      });
+      print(stringResponseconsump);
+      return response.toString();
+    } else {
+      return const CircularProgressIndicator();
+    }
+  }
+
   // Called when the dependency of this state object changes
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     rty;
+    apiConsumption();
     consumptionApi();
   }
 
@@ -77,12 +94,14 @@ class _GraphState extends State<Graph> {
   void didUpdateWidget(covariant Graph oldWidget) {
     super.didUpdateWidget(oldWidget);
     rty;
+    apiConsumption();
     consumptionApi();
   }
 
   @override
   void initState() {
     super.initState();
+    apiConsumption();
     consumptionApi();
     rty;
     // final apicons = consumptionApi();
@@ -143,6 +162,7 @@ class _GraphState extends State<Graph> {
             setState(() {
               (currentDateTime = currentMonthList[index]);
               consumptionApi();
+              apiConsumption();
               rty = (rty);
               print('select data => $currentDateTime');
             });
@@ -211,7 +231,8 @@ class _GraphState extends State<Graph> {
         height: 50,
         child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
           Text(
-            rty != null ? rty!["tatalconsumption"].toString() : "00.0",
+            // rty != null ? rty!["tatalconsumption"].toString() : "00.0",
+            stringResponseconsump != null ? "$stringResponseconsump" : "00.0",
             style: const TextStyle(
                 fontFamily: 'inter',
                 fontWeight: FontWeight.w700,
@@ -331,6 +352,7 @@ class _GraphState extends State<Graph> {
           body: RefreshIndicator(
             onRefresh: () {
               consumptionApi();
+              apiConsumption();
               return Future<void>.delayed(const Duration(seconds: 3));
             },
             child: ListView(
@@ -372,6 +394,7 @@ class _GraphState extends State<Graph> {
                               setState(() {
                                 selectedValue = date;
                                 consumptionApi();
+                                apiConsumption();
                                 rty = (rty);
                               });
                             },

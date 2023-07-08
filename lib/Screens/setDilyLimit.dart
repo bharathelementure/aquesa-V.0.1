@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+// import 'package:otp_auth/Screens/home.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
@@ -30,18 +31,18 @@ Map? rty;
 class _SetDailyLimitState extends State<SetDailyLimit> {
   final curr = FirebaseAuth.instance.currentUser;
   final now = DateTime.now;
-  /*Future apiConsumption() async {
+  Future apiConsumption() async {
     http.Response response;
-    response =
-        await http.post(Uri.parse("http://192.168.0.116:8000/watermeter"));
+    response = await http.post(Uri.parse("http://192.168.0.126:8080/csm"));
     if (response.statusCode == 200) {
       setState(() {
         stringResponse = response.body;
       });
+      return response.toString();
     } else {
       return const CircularProgressIndicator();
     }
-  }*/
+  }
 
   @override
   void initState() {
@@ -201,15 +202,19 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          
-                              Text(rty != null ?
-                                  rty!["tatalconsumption"].toString() : "00.0",
-                                  style: const TextStyle(
-                                      fontFamily: 'inter',
-                                      fontSize: 80,
-                                      fontWeight: FontWeight.w700,
-                                      color: Color(0xFFFFFFFF)),
-                                ),
+                          Text(
+                            // stringResponseconsump != null
+                            //     ? "$stringResponseconsump"
+                            //     : "00.0",
+                            rty != null
+                                ? rty!["tatalconsumption"].toString()
+                                : "00.0",
+                            style: const TextStyle(
+                                fontFamily: 'inter',
+                                fontSize: 50,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFFFFFFFF)),
+                          ),
                           /*Text(
                             '69.7',
                             // stringResponse.toString(),

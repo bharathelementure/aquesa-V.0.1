@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
       isAuth = await authentication.authenticate(
           localizedReason: 'Scan your finger to access the app',
           options: const AuthenticationOptions(
-              stickyAuth: true, useErrorDialogs: true));
+              stickyAuth: true, useErrorDialogs: true, biometricOnly: true));
       if (isAuth) {
         _isauthenticating = true;
         Navigator.pushNamed(context, '');
