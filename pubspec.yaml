@@ -19,40 +19,61 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  # otp enter design
   pinput: ^2.2.12
+  # FIrbase
   firebase_core: ^2.3.0
   firebase_auth: ^4.1.4
-  flutter_local_notifications: ^12.0.4
+  firebase_storage: ^11.1.0
   firebase_messaging: ^14.1.3
-  http: ^0.13.5
+  firebase_database: ^10.1.0
   cloud_firestore: ^4.2.0
+  # flutter local notifications
+  flutter_local_notifications: ^12.0.4
+  # http request
+  http: ^0.13.5
+  # water wave formation
   wave: ^0.2.2
+  # Toast messages
   fluttertoast: ^8.0.9
+  # email validator
   email_validator: ^2.1.17
+  # animated splash screen
   animated_splash_screen: ^1.3.0
+  # circular progress indicator
   syncfusion_flutter_gauges: ^20.2.50
+  # Qr-code scanner
   qr_code_scanner: ^1.0.1
+  # flow chart or graph
   fl_chart: ^0.55.2
+  # date day month list
   intl: ^0.17.0
+  # splash screen
   flutter_native_splash: ^2.2.9
   local_auth: ^2.1.2
   internet_connection_checker: ^1.0.0+1
   connectivity_plus: ^3.0.2
+  # select image from gallery or camera
   image_picker: ^0.8.6+1
-  firebase_storage: ^11.1.0
-  firebase_database: ^10.1.0
+
   path: ^1.8.2
   shared_preferences: ^2.1.0
   path_provider: ^2.0.14
   calendar_timeline: ^1.1.2
   date_picker_timeline: ^1.2.3
   date_time_line: ^0.0.3
+  # flutter_switch toggle
+  flutter_switch: ^0.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  bdd_widget_test: ^1.6.0
+  build_runner:
   flutter_lints: ^2.0.0
+  mocktail: ^0.3.0
+  mockito: ^5.4.2
+  test: ^1.24.1
 
 flutter_native_splash:
   color: "#72AFDE"

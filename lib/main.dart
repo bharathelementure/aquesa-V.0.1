@@ -12,6 +12,7 @@ import 'package:otp_auth/Screens/qrCodeScanner.dart';
 import 'package:otp_auth/Screens/registration.dart';
 import 'package:otp_auth/Screens/setDilyLimit.dart';
 import 'package:otp_auth/Screens/splashScreen.dart';
+import 'package:otp_auth/Screens/utility_valve_control.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async {
   // print(message.data.toString());
@@ -41,6 +42,7 @@ Future<void> main() async {
       '/setDaily': (context) => const SetDailyLimit(),
       '/graph': (context) => const Graph(),
       '/qrCodeScanner': (context) => const QrCodeScanner(),
+      '/utility_valve_controller': (context) => const Utility(),
     },
   ));
 }
@@ -53,15 +55,11 @@ class Intializer extends StatefulWidget {
 }
 
 class _IntializerState extends State<Intializer> {
-  late FirebaseAuth _auth;
-  User? _user;
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _auth = FirebaseAuth.instance;
-    _user = _auth.currentUser;
     isLoading = false;
   }
 

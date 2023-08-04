@@ -226,7 +226,7 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
                               validator: (value) {
                                 RegExp regex = RegExp(r'^.{6,}$');
                                 if (value!.isEmpty) {
-                                  return ("Password is required to Login");
+                                  return ("Password is required to Sign Up");
                                 }
                                 if (!regex.hasMatch(value)) {
                                   return ("Please enter valid password(Min. 6 Character)");

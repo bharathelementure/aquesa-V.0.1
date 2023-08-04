@@ -259,6 +259,25 @@ class _NavDrawerState extends State<NavDrawer> {
                 // }
               },
             ),
+            ListTile(
+              leading: const Icon(
+                Icons.format_color_fill,
+                size: 20,
+                color: Colors.black,
+              ),
+              title: const Text(
+                'Utility Valve Controller',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'dmsans',
+                    color: Color(0xFF181D27)),
+              ),
+              onTap: () async {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/utility_valve_controller');
+              },
+            ),
             const Divider(
               indent: 30,
               endIndent: 30,

@@ -231,8 +231,8 @@ class _GraphState extends State<Graph> {
         height: 50,
         child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
           Text(
-            // rty != null ? rty!["tatalconsumption"].toString() : "00.0",
-            stringResponseconsump != null ? "$stringResponseconsump" : "00.0",
+            rty != null ? rty!["tatalconsumption"].toString() : "00.0",
+            // stringResponseconsump != null ? "$stringResponseconsump" : "00.0",
             style: const TextStyle(
                 fontFamily: 'inter',
                 fontWeight: FontWeight.w700,

@@ -146,6 +146,7 @@ class _MyPhoneState extends State<MyPhone> {
                   Container(
                     padding: const EdgeInsets.only(left: 25, right: 25),
                     child: TextFormField(
+                      key: const Key('email'),
                       controller: emailController,
                       cursorColor: Colors.black,
                       keyboardType: TextInputType.emailAddress,
@@ -166,6 +167,7 @@ class _MyPhoneState extends State<MyPhone> {
                   Container(
                     padding: const EdgeInsets.only(left: 25, right: 25),
                     child: TextFormField(
+                      key: const Key('password'),
                       controller: passwordController,
                       cursorColor: Colors.black,
                       textInputAction: TextInputAction.done,
@@ -189,6 +191,7 @@ class _MyPhoneState extends State<MyPhone> {
                 width: 214,
                 height: 47,
                 child: ElevatedButton(
+                    key: const Key('signInbtn'),
                     style: ElevatedButton.styleFrom(
                         // primary: const Color(0xFF6FADE0),
                         shape: RoundedRectangleBorder(
@@ -227,7 +230,8 @@ class _MyPhoneState extends State<MyPhone> {
                   builder: (context) => const ForgotPasswordPage())),
             ),
           ])
-        ]))); /*onPressed: () async {
+        ])));
+    /*onPressed: () async {
                       await FirebaseAuth.instance.verifyPhoneNumber(
                         phoneNumber: numberController.text + phone,
                         verificationCompleted:
@@ -271,19 +275,22 @@ class _MyPhoneState extends State<MyPhone> {
 // email verification
   void signIn(String email, String password) async {
     if (formKey.currentState!.validate()) {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text).then((id) => {
-            Fluttertoast.showToast(msg: 'Login Successfull'),
-            Navigator.of(context).popUntil((route) => route.isFirst)
-          }).catchError((e) {
-            Fluttertoast.showToast(
-          msg: '${e.message}',
-          gravity: ToastGravity.TOP,
-          toastLength: Toast.LENGTH_LONG,
-          backgroundColor: Colors.grey,
-          textColor: Colors.black,
-          fontSize: 16);
-          });
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: emailController.text, password: passwordController.text)
+          .then((id) => {
+                Fluttertoast.showToast(msg: 'Login Successfull'),
+                Navigator.of(context).popUntil((route) => route.isFirst)
+              })
+          .catchError((e) {
+        Fluttertoast.showToast(
+            msg: '${e.message}',
+            gravity: ToastGravity.TOP,
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.grey,
+            textColor: Colors.black,
+            fontSize: 16);
+      });
     }
     // navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
