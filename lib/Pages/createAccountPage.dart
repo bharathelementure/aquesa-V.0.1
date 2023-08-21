@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,16 @@ class CreateAcountPage extends StatefulWidget {
 }
 
 class _CreateAcountPageState extends State<CreateAcountPage> {
+  // dropdown list
+  final List<String> propertyItems = [
+    'Soultree',
+    'Urban Nest',
+    'Engrace',
+    'Others'
+  ];
+
+  String? selectedValue;
+  // firebaseAuth
   final _auth = FirebaseAuth.instance;
   final formKey = GlobalKey<FormState>();
   // final _authRepo = Get.put(AuthenticationRepository());
@@ -27,6 +38,8 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
   final confirmPasswordController = TextEditingController();
   final nameEditingController = TextEditingController();
   final numberController = TextEditingController();
+  final flatNoController = TextEditingController();
+  final propertyController = TextEditingController();
   // pasword show or hide
   bool isObscure = true;
 
@@ -218,6 +231,88 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
                                   letterSpacing: 2),
                             ),
                           ),
+                          const SizedBox(height: 20),
+                          Container(
+                            padding: const EdgeInsets.only(left: 25, right: 25),
+                            child: TextFormField(
+                              key: const Key('flat-no'),
+                              controller: flatNoController,
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  hintText: 'E101',
+                                  hintStyle: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: 'raleway',
+                                      color: Color(0xFF12172B)),
+                                  filled: true,
+                                  fillColor: Color(0xFFFFFFFF),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Color(0xFF32B7E1), width: 2),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  labelText: 'Flat-No',
+                                  labelStyle: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: 'raleway',
+                                      color: Color(0xFF12172B))),
+                              keyboardType: TextInputType.streetAddress,
+                              textInputAction: TextInputAction.next,
+                              style: const TextStyle(
+                                  color: Color(0xFF12172B),
+                                  fontSize: 12,
+                                  fontFamily: 'raleway',
+                                  letterSpacing: 2),
+                            ),
+                          ),
+                          // Property
+                          const SizedBox(height: 10),
+                          Container(
+                            padding: const EdgeInsets.only(
+                                left: 25, right: 25, top: 10),
+                            child: DropdownButtonFormField2(
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.zero,
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10))),
+                              isExpanded: true,
+                              hint: const Text('Select the property',
+                                  style: TextStyle(fontSize: 14)),
+                              icon: const Icon(Icons.arrow_drop_down,
+                                  color: Colors.black45),
+                              iconSize: 30,
+                              buttonHeight: 60,
+                              buttonPadding:
+                                  const EdgeInsets.only(left: 20, right: 10),
+                              dropdownDecoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15)),
+                              items: propertyItems
+                                  .map((item) => DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Text(
+                                          item,
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                      ))
+                                  .toList(),
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Please select property';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                setState(() {
+                                  // selectedValue = value;
+                                });
+                              },
+                            ),
+                          ),
                           // Password Controller
                           const SizedBox(height: 20),
                           Container(
@@ -368,6 +463,8 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
         displayName: nameEditingController.text,
         email: emailController.text,
         photoURL: profileimageController.text,
+        flatNo: flatNoController.text,
+        property: propertyController.text,
         phoneNumber: int.parse(numberController.text));
     await firebaseFirestore
         .collection('users')
@@ -389,6 +486,8 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
       'displayName': nameEditingController,
       'phoneNumber': numberController,
       'email': emailController,
+      'flat-no': flatNoController,
+      'property': propertyController,
       'id': '',
     });
   }

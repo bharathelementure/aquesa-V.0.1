@@ -259,6 +259,7 @@ class _NavDrawerState extends State<NavDrawer> {
                 // }
               },
             ),
+            // Utility valve controller
             ListTile(
               leading: const Icon(
                 Icons.format_color_fill,
@@ -273,7 +274,7 @@ class _NavDrawerState extends State<NavDrawer> {
                     fontFamily: 'dmsans',
                     color: Color(0xFF181D27)),
               ),
-              onTap: () async {
+              onTap: () {
                 Navigator.of(context).pop();
                 Navigator.pushNamed(context, '/utility_valve_controller');
               },
@@ -299,11 +300,80 @@ class _NavDrawerState extends State<NavDrawer> {
                     color: Color(0xFF181D27)),
               ),
               onTap: () async {
+                Navigator.of(context).pop();
                 await FirebaseAuth.instance.signOut();
-                // Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => const Registration()));
+              },
+            ),
+            // Delete User Account
+            ListTile(
+              leading: const Icon(
+                Icons.delete_forever_outlined,
+                size: 20,
+                color: Colors.black,
+              ),
+              title: const Text(
+                'Delete Account',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'dmsans',
+                    color: Color(0xFF181D27)),
+              ),
+              onTap: () async {
+                Navigator.of(context).pop();
+                // await FirebaseAuth.instance.currentUser!.delete();
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                          backgroundColor: Colors.grey.shade300,
+                          shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  color: Colors.black, width: 2),
+                              borderRadius: BorderRadius.circular(15)),
+                          icon: const Icon(Icons.delete_forever_sharp,
+                              size: 50, color: Colors.black),
+                          title: const Text(
+                            'Are you sure?',
+                            style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w300,
+                                fontFamily: 'dmsans'),
+                          ),
+                          content: const Text(
+                            'Do you really want to delete this account. This account cannot be restore.',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w300,
+                                fontFamily: 'dmsans'),
+                            textAlign: TextAlign.center,
+                          ),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'dmsans'),
+                                )),
+                            TextButton(
+                                onPressed: () async {
+                                  // Navigator.of(context).pop();
+                                  await FirebaseAuth.instance.currentUser!
+                                      .delete();
+                                },
+                                child: const Text(
+                                  'Delete',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'dmsans'),
+                                ))
+                          ],
+                        ));
               },
             ),
             const SizedBox(height: 150),

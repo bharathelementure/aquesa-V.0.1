@@ -47,17 +47,21 @@ class _UtilityState extends State<Utility> {
                 ),
                 const Spacer(),
                 FlutterSwitch(
-                    width: 52,
+                    width: 62,
                     height: 23,
                     activeColor: const Color(0xFF59B8EE),
                     inactiveColor: const Color(0xFFD2D2D2),
                     toggleColor: const Color(0xFFFFFFFF),
+                    showOnOff: true,
+                    activeText: 'ON',
+                    inactiveText: 'OFF',
                     toggleSize: 21,
                     value: switches,
                     onToggle: (value) async {
                       await Future.delayed(Duration(minutes: 1));
                       setState(() {
                         switches = value;
+                        if (value) {}
                         print(value);
                       });
                     }),

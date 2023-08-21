@@ -6,27 +6,34 @@ class UserMode {
   final int phoneNumber;
   final String email;
   final String photoURL;
+  final String flatNo;
+  final String property;
 
   UserMode(
       {this.id = '',
       required this.displayName,
       required this.email,
       required this.phoneNumber,
-      required this.photoURL});
+      required this.photoURL,
+      required this.flatNo,
+      required this.property});
 
-  UserMode copy({
-    String? id,
-    String? displayName,
-    String? email,
-    int? phoneNumber,
-    String? photoURL,
-  }) =>
+  UserMode copy(
+          {String? id,
+          String? displayName,
+          String? email,
+          int? phoneNumber,
+          String? photoURL,
+          String? flatNo,
+          String? property}) =>
       UserMode(
           id: id ?? this.id,
           displayName: displayName ?? this.displayName,
           email: email ?? this.email,
           phoneNumber: phoneNumber ?? this.phoneNumber,
-          photoURL: photoURL ?? this.photoURL);
+          photoURL: photoURL ?? this.photoURL,
+          flatNo: flatNo ?? this.flatNo,
+          property: property ?? this.property);
 
   factory UserMode.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
@@ -36,7 +43,9 @@ class UserMode {
         displayName: datafet["displayName"],
         email: datafet["email"],
         phoneNumber: datafet["phoneNumber"],
-        photoURL: datafet["photoURL"]);
+        photoURL: datafet["photoURL"],
+        flatNo: datafet["flatNo"],
+        property: datafet["property"]);
   }
 
   // receving data from firestore
@@ -46,7 +55,9 @@ class UserMode {
         displayName: map['displayName'],
         email: map['email'],
         phoneNumber: map['phoneNumber'],
-        photoURL: 'photoURL');
+        photoURL: 'photoURL',
+        flatNo: 'flatNo',
+        property: 'property');
   }
 
   // sending data to firestore
@@ -57,6 +68,8 @@ class UserMode {
       'displayName': displayName,
       'phoneNumber': phoneNumber,
       'photoURL': photoURL,
+      'flatNo': flatNo,
+      'property': property
     };
   }
 
@@ -65,7 +78,9 @@ class UserMode {
         displayName: parsedJson['displayName'],
         email: parsedJson['email'],
         phoneNumber: parsedJson['phoneNumber'],
-        photoURL: parsedJson['photoURL']);
+        photoURL: parsedJson['photoURL'],
+        flatNo: parsedJson['flatNo'],
+        property: parsedJson['property']);
   }
 
   static UserMode fromJson(Map<String, dynamic> json) => UserMode(
@@ -73,7 +88,9 @@ class UserMode {
       email: json['email'],
       phoneNumber: json['phoneNumber'],
       photoURL: json['photoURL'],
-      id: json['id']);
+      id: json['id'],
+      flatNo: json['flatNo'],
+      property: json['property']);
 
   Map<String, dynamic> toJson() {
     return {
@@ -81,7 +98,9 @@ class UserMode {
       "displayName": displayName,
       "email": email,
       "phoneNumber": phoneNumber,
-      'photoURL': photoURL
+      "photoURL": photoURL,
+      "flatNo": flatNo,
+      "property": property
     };
   }
 }
