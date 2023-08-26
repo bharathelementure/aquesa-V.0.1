@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 // import 'package:otp_auth/Screens/home.dart';
@@ -49,6 +50,39 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
     // apiConsumption();
     super.initState();
     Future<Object> consumptionApi() async {
+      try {
+        final body = {'customerId': curr!.uid};
+        final jsonString = json.encode(body);
+        final uri = Uri.parse(
+            "https://845gpwqyuf.execute-api.ap-south-1.amazonaws.com/totalConsumption");
+        final header = {HttpHeaders.contentTypeHeader: "application/json"};
+        final http.Response response =
+            await http.post(uri, headers: header, body: jsonString);
+        if (response.statusCode == 200) {
+          print(response.body);
+          Map<String, dynamic> resp = json.decode(response.body);
+          setState(() {
+            rty = resp;
+          });
+          return resp;
+        } else {
+          // Api request fail with status code non-200
+          Fluttertoast.showToast(msg: '${response.statusCode}');
+          throw Exception(
+              'Api request failed with status code: ${response.statusCode}');
+        }
+      } catch (e) {
+        if (e is SocketException) {
+          // error related to no internet
+          print('No internet connection');
+          Fluttertoast.showToast(msg: 'No Internet connection');
+          return "No internet connection";
+        }
+        return const CircularProgressIndicator();
+      }
+    }
+
+    /*Future<Object> consumptionApi() async {
       final body = {
         'customerId': curr?.uid,
       };
@@ -68,7 +102,7 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
       } else {
         return const CircularProgressIndicator();
       }
-    }
+    }*/
 
     var adf = consumptionApi();
     print(adf);

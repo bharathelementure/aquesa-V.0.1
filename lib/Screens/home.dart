@@ -41,42 +41,64 @@ class _GraphState extends State<Graph> {
 
   // api
   Future<Object> consumptionApi() async {
-    final body = {
-      'customerId': "${curr!.uid},$selectedValue",
-    };
-    final jsonString = json.encode(body);
-    final uri = Uri.parse(
-        "https://845gpwqyuf.execute-api.ap-south-1.amazonaws.com/totalConsumption");
-    final headers = {HttpHeaders.contentTypeHeader: "application/json"};
-    final http.Response response =
-        await http.post(uri, headers: headers, body: jsonString);
-    if (response.statusCode == 200) {
-      print(response.body);
-      Map<String, dynamic> resp = json.decode(response.body);
-      setState(() {
-        rty = resp;
-      });
-      return resp;
-    } else {
+    try {
+      final body = {'customerId': "${curr!.uid},$selectedValue"};
+      final jsonString = json.encode(body);
+      final uri = Uri.parse(
+          "https://845gpwqyuf.execute-api.ap-south-1.amazonaws.com/totalConsumption");
+      final header = {HttpHeaders.contentTypeHeader: "application/json"};
+      final http.Response response =
+          await http.post(uri, headers: header, body: jsonString);
+      if (response.statusCode == 200) {
+        print(response.body);
+        Map<String, dynamic> resp = json.decode(response.body);
+        setState(() {
+          rty = resp;
+        });
+        return resp;
+      } else {
+        // Api request fail with status code non-200
+        Fluttertoast.showToast(msg: '${response.statusCode}');
+        throw Exception(
+            'Api request failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      if (e is SocketException) {
+        // error related to no internet
+        print('No internet connection');
+        Fluttertoast.showToast(msg: 'No Internet connection');
+        return "No internet connection";
+      }
       return const CircularProgressIndicator();
     }
   }
+// Localy host api
+  /*Future<void> apiConsumption() async {
+    try {
+      final rdata = {"customer_id": "${curr!.uid},$selectedValue"};
+      final jsonString = json.encode(rdata);
+      final uri = Uri.parse("http://192.168.0.126:8080/csm");
 
-  /*Future apiConsumption() async {
-    final rdata = {"customer_id": "${curr!.uid},$selectedValue"};
-    final jsonString = json.encode(rdata);
-    final uir = Uri.parse("http://192.168.0.126:8080/csm");
-    http.Response response;
-    response = await http.post(uir, body: jsonString);
-    print(response.body);
-    if (response.statusCode == 200) {
-      setState(() {
-        stringResponseconsump = response.body;
-      });
-      print(stringResponseconsump);
-      return response.toString();
-    } else {
-      return const CircularProgressIndicator();
+      http.Response response;
+      response = await http.post(uri, body: jsonString);
+
+      if (response.statusCode == 200) {
+        setState(() {
+          stringResponseconsump = response.body;
+        });
+        print(stringResponseconsump);
+        print("API request successful");
+      } else {
+        print("API request failed with status code: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("An error occurred: $e");
+      if (e is SocketException) {
+        print("No internet connection");
+        // Handle no internet connection here
+      } else {
+        // Handle other exceptions here
+      }
     }
   }*/
 
