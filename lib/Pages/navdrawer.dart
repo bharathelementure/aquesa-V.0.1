@@ -104,19 +104,7 @@ class _NavDrawerState extends State<NavDrawer> {
                                                 color: Color(0xFFFFFFFF),
                                               );
                                             },
-                                          )
-                                          /*CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                                '${datare['profileimage']}'),
-                                            radius: 80,
-                                            onBackgroundImageError:
-                                                (error, stackTrace) {
-                                              Error();
-                                              const Icon(
-                                                  Icons.account_circle_rounded);
-                                            },
-                                          )*/
-                                          ),
+                                          )),
                                     ),
                                     Text(
                                       '${datare['displayName']}',
@@ -159,33 +147,6 @@ class _NavDrawerState extends State<NavDrawer> {
                     ],
                   )),
             ),
-            // Main graph
-            /*ListTile(
-              // trailing: const Icon(Icons.arrow_forward_ios_rounded,
-              // size: 20, color: Colors.black),
-              leading: const Icon(
-                Icons.home_filled,
-                size: 20,
-                color: Colors.black,
-              ),
-              title: const Text(
-                'Home',
-                style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'dmsans',
-                    color: Color(0xFF181D27)),
-              ),
-              onTap: () async {
-                Navigator.of(context).pop();
-                // var nave = await Navigator.pushNamed(context, '/graph');
-                // if (nave == true || nave == null) {
-                //   Navigator.of(context).pushNamedAndRemoveUntil(
-                //       '/graph', (Route<dynamic> route) => false);
-                // }
-                Navigator.pushNamed(context, '/graph');
-              },
-            ),*/
             // add qrcode
             ListTile(
               leading: const Icon(
@@ -201,15 +162,8 @@ class _NavDrawerState extends State<NavDrawer> {
                     fontFamily: 'dmsans',
                     color: Color(0xFF181D27)),
               ),
-              onTap: () async {
+              onTap: () {
                 Navigator.of(context).pop();
-                // var nav = await Navigator.pushNamed(context, '/qrCodeScanner');
-                // if (nav == true || nav == null) {
-                //   Navigator.of(context).pushNamedAndRemoveUntil(
-                //       '/graph', (Route<dynamic> route) => false);
-                // }
-                // Navigator.of(context).push(MaterialPageRoute(
-                // builder: (context) => const QrCodeScanner()));
                 Navigator.pushNamed(context, '/qrCodeScanner');
               },
             ),
@@ -228,7 +182,7 @@ class _NavDrawerState extends State<NavDrawer> {
                     fontFamily: 'dmsans',
                     color: Color(0xFF181D27)),
               ),
-              onTap: () async {
+              onTap: () {
                 Navigator.of(context).pop();
                 Navigator.pushNamed(context, '/circularsetDailyLimit');
               },
@@ -248,15 +202,9 @@ class _NavDrawerState extends State<NavDrawer> {
                     fontFamily: 'dmsans',
                     color: Color(0xFF181D27)),
               ),
-              onTap: () async {
+              onTap: () {
                 Navigator.of(context).pop();
                 Navigator.pushNamed(context, '/setDaily');
-                // var navo = await Navigator.of(context).push(MaterialPageRoute(
-                //     builder: (context) => const SetDailyLimit()));
-                // if (navo == true || navo == null) {
-                //   Navigator.of(context).pushNamedAndRemoveUntil(
-                //       '/graph', (Route<dynamic> route) => false);
-                // }
               },
             ),
             // Utility valve controller
@@ -321,7 +269,6 @@ class _NavDrawerState extends State<NavDrawer> {
               ),
               onTap: () async {
                 Navigator.of(context).pop();
-                // await FirebaseAuth.instance.currentUser!.delete();
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
@@ -361,8 +308,11 @@ class _NavDrawerState extends State<NavDrawer> {
                                 )),
                             TextButton(
                                 onPressed: () async {
-                                  // Navigator.of(context).pop();
-                                  await FirebaseAuth.instance.currentUser!
+                                  Navigator.of(context).pop();
+                                  await curr!.delete();
+                                  await FirebaseFirestore.instance
+                                      .collection("users")
+                                      .doc(curr!.uid)
                                       .delete();
                                 },
                                 child: const Text(

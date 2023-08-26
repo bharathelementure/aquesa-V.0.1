@@ -25,6 +25,8 @@ class _MyPhoneState extends State<MyPhone> {
   final formKey = GlobalKey<FormState>();
   TextEditingController numberController = TextEditingController();
   var phone = '';
+  // pasword show or hide
+  bool isObscure = true;
 
   @override
   void initState() {
@@ -164,6 +166,7 @@ class _MyPhoneState extends State<MyPhone> {
                     ),
                   ),
                   const SizedBox(height: 4),
+                  // Password Controller
                   Container(
                     padding: const EdgeInsets.only(left: 25, right: 25),
                     child: TextFormField(
@@ -175,12 +178,21 @@ class _MyPhoneState extends State<MyPhone> {
                       validator: (value) => value != null && value.length < 6
                           ? 'Enter min. 6 characters'
                           : null,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                           labelText: 'Password',
-                          border: OutlineInputBorder(
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  isObscure = !isObscure;
+                                });
+                              },
+                              icon: Icon(isObscure
+                                  ? Icons.visibility
+                                  : Icons.visibility_off)),
+                          border: const OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)))),
-                      obscureText: true,
+                      obscureText: isObscure,
                     ),
                   ),
                 ],
@@ -285,6 +297,7 @@ class _MyPhoneState extends State<MyPhone> {
           .catchError((e) {
         Fluttertoast.showToast(
             msg: '${e.message}',
+            // msg: "Incorrect email or password",
             gravity: ToastGravity.TOP,
             toastLength: Toast.LENGTH_LONG,
             backgroundColor: Colors.grey,

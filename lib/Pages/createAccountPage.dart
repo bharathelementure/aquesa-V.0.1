@@ -39,7 +39,6 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
   final nameEditingController = TextEditingController();
   final numberController = TextEditingController();
   final flatNoController = TextEditingController();
-  final propertyController = TextEditingController();
   // pasword show or hide
   bool isObscure = true;
 
@@ -306,9 +305,10 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
                                 }
                                 return null;
                               },
-                              onChanged: (value) {
+                              onChanged: (String? value) {
                                 setState(() {
-                                  // selectedValue = value;
+                                  selectedValue = value;
+                                  print(selectedValue);
                                 });
                               },
                             ),
@@ -464,7 +464,7 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
         email: emailController.text,
         photoURL: profileimageController.text,
         flatNo: flatNoController.text,
-        property: propertyController.text,
+        property: selectedValue.toString(),
         phoneNumber: int.parse(numberController.text));
     await firebaseFirestore
         .collection('users')
@@ -487,7 +487,7 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
       'phoneNumber': numberController,
       'email': emailController,
       'flat-no': flatNoController,
-      'property': propertyController,
+      'property': selectedValue,
       'id': '',
     });
   }
