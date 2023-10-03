@@ -5,15 +5,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:otp_auth/Pages/authPage.dart';
+import 'package:otp_auth/Pages/auth_page.dart';
 import 'package:otp_auth/Pages/edit_update.dart';
-import 'package:otp_auth/Pages/verifyemailPage.dart';
-import 'package:otp_auth/Screens/circularSetDailyLimit.dart';
+import 'package:otp_auth/Pages/verify_email_page.dart';
+import 'package:otp_auth/Screens/circular_set_daily_limit.dart';
 import 'package:otp_auth/Screens/home.dart';
-import 'package:otp_auth/Screens/qrCodeScanner.dart';
+import 'package:otp_auth/Screens/qr_code_scanner.dart';
 import 'package:otp_auth/Screens/registration.dart';
-import 'package:otp_auth/Screens/setDilyLimit.dart';
-import 'package:otp_auth/Screens/splashScreen.dart';
+import 'package:otp_auth/Screens/set_daily_limit.dart';
+import 'package:otp_auth/Screens/splash_screen.dart';
 import 'package:otp_auth/Screens/utility_valve_control.dart';
 
 Future<void> backgroundHandler(RemoteMessage message) async {

@@ -1,5 +1,3 @@
-// ignore_for_file: file_names
-
 import 'package:intl/intl.dart';
 
 class UtilsDate {
@@ -54,12 +52,14 @@ class UtilsDate {
 
   static Iterable<DateTime> daysRange(DateTime first, DateTime last) {
     var listOfDates = List<DateTime>.generate(
-      last.day, (i) => DateTime(first.year, first.month, i + 1));
+        last.day, (i) => DateTime(first.year, first.month, i + 1));
     return listOfDates;
   }
+
   static bool isFirstDayOfMonth(DateTime day) {
     return isSameDay(firstDayOfMonth(day), day);
   }
+
   static bool isLastDayOfMonth(DateTime day) {
     return isSameDay(lastDayOfMonth(day), day);
   }
@@ -84,9 +84,10 @@ class UtilsDate {
   static DateTime lastDayOfMonth(DateTime month) {
     var beginningNextMonth = (month.month < 12)
         ? DateTime(month.year, month.month + 1, 1)
-        : DateTime(month.year + 1, 1,1);
+        : DateTime(month.year + 1, 1, 1);
     return beginningNextMonth.subtract(const Duration(days: 1));
   }
+
   static Iterable<DateTime> daysInRange(DateTime start, DateTime end) sync* {
     var i = start;
     var offset = start.timeZoneOffset;
@@ -125,7 +126,7 @@ class UtilsDate {
     if (month == 1) {
       year--;
       month = 12;
-    }else {
+    } else {
       month--;
     }
     return DateTime(year, month);
@@ -138,7 +139,7 @@ class UtilsDate {
     if (month == 12) {
       year++;
       month = 1;
-    }else {
+    } else {
       month++;
     }
     return DateTime(year, month);
@@ -151,5 +152,4 @@ class UtilsDate {
   static DateTime nextWeek(DateTime w) {
     return w.add(const Duration(days: 7));
   }
-
 }

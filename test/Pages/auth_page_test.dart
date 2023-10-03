@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:otp_auth/Pages/authPage.dart';
-import 'package:otp_auth/Pages/createAccountPage.dart';
+import 'package:otp_auth/Pages/auth_page.dart';
+import 'package:otp_auth/Pages/create_account_page.dart';
 import 'package:otp_auth/Screens/registration.dart';
 
 void main() async {

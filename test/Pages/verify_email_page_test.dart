@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:otp_auth/Pages/verifyemailPage.dart';
+import 'package:otp_auth/Pages/verify_email_page.dart';
 
 void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +17,7 @@ void main() async {
       mockFirebaseAuth = MockFirebaseAuth();
       currentUser = MockUser();
       when(() => mockFirebaseAuth.currentUser).thenReturn(currentUser as User? Function());
-      verifyEmailPage = VerifyEmailPage();
+      verifyEmailPage = const VerifyEmailPage();
     });
 
     testWidgets('VerifyEmailPage shows Graph when email is verified',

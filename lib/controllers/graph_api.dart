@@ -8,7 +8,7 @@ class consumapi {
     http.Response response;
     response = await client.post(Uri.parse("http://192.168.0.126:8000/csm"));
     if (response.statusCode == 200) {
-      print(response.body);
+      debugPrint(response.body);
       // setState(() {
       //   stringResponse = response.body;
       // });

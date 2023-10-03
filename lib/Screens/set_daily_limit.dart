@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use, prefer_typing_uninitialized_variables, file_names, avoid_print
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -8,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-// import 'package:otp_auth/Screens/home.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
@@ -34,10 +31,11 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
   final now = DateTime.now;
   Future apiConsumption() async {
     http.Response response;
-    response = await http.post(Uri.parse("http://192.168.0.126:8080/csm"));
+    response = await http.post(Uri.parse("http://192.168.0.136:8000/devID"));
     if (response.statusCode == 200) {
       setState(() {
         stringResponse = response.body;
+        debugPrint("Deviceconsump: $stringResponse");
       });
       return response.toString();
     } else {
@@ -47,7 +45,7 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
 
   @override
   void initState() {
-    // apiConsumption();
+    apiConsumption();
     super.initState();
     Future<Object> consumptionApi() async {
       try {
@@ -59,7 +57,7 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
         final http.Response response =
             await http.post(uri, headers: header, body: jsonString);
         if (response.statusCode == 200) {
-          print(response.body);
+          debugPrint(response.body);
           Map<String, dynamic> resp = json.decode(response.body);
           setState(() {
             rty = resp;
@@ -74,7 +72,7 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
       } catch (e) {
         if (e is SocketException) {
           // error related to no internet
-          print('No internet connection');
+          debugPrint('No internet connection');
           Fluttertoast.showToast(msg: 'No Internet connection');
           return "No internet connection";
         }
@@ -105,9 +103,9 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
     }*/
 
     var adf = consumptionApi();
-    print(adf);
+    debugPrint("$adf");
 
-    print("hii");
+    debugPrint("hii");
   }
 
   @override
@@ -237,12 +235,10 @@ class _SetDailyLimitState extends State<SetDailyLimit> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            // stringResponseconsump != null
-                            //     ? "$stringResponseconsump"
+                            stringResponse != null ? "$stringResponse" : "00.0",
+                            // rty != null
+                            //     ? rty!["tatalconsumption"].toString()
                             //     : "00.0",
-                            rty != null
-                                ? rty!["tatalconsumption"].toString()
-                                : "00.0",
                             style: const TextStyle(
                                 fontFamily: 'inter',
                                 fontSize: 50,

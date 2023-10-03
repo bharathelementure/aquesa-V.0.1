@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:otp_auth/Pages/navdrawer.dart';
-import 'package:otp_auth/controllers/home_controllers/currentdate_Titledate.dart';
-import 'package:otp_auth/controllers/home_controllers/measurment_graph.dart';
-import 'package:otp_auth/utils/dart_Utils.dart' as date_util;
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:otp_auth/Pages/navdrawer.dart';
+import 'package:otp_auth/controllers/home_controllers/current_date_title_date.dart';
+import 'package:otp_auth/controllers/home_controllers/measurment_graph.dart';
+import 'package:otp_auth/utils/dart_utils.dart' as date_util;
 
 import '../controllers/pop_notification.dart';
 
@@ -50,7 +50,7 @@ class _GraphState extends State<Graph> {
       final http.Response response =
           await http.post(uri, headers: header, body: jsonString);
       if (response.statusCode == 200) {
-        print(response.body);
+        debugPrint(response.body);
         Map<String, dynamic> resp = json.decode(response.body);
         setState(() {
           rty = resp;
@@ -65,19 +65,20 @@ class _GraphState extends State<Graph> {
     } catch (e) {
       if (e is SocketException) {
         // error related to no internet
-        print('No internet connection');
+        debugPrint('No internet connection');
         Fluttertoast.showToast(msg: 'No Internet connection');
         return "No internet connection";
       }
       return const CircularProgressIndicator();
     }
   }
+
 // Localy host api
-  /*Future<void> apiConsumption() async {
+  Future<void> apiConsumption() async {
     try {
       final rdata = {"customer_id": "${curr!.uid},$selectedValue"};
       final jsonString = json.encode(rdata);
-      final uri = Uri.parse("http://192.168.0.126:8080/csm");
+      final uri = Uri.parse("http://192.168.0.136:8000/devID");
 
       http.Response response;
       response = await http.post(uri, body: jsonString);
@@ -86,29 +87,30 @@ class _GraphState extends State<Graph> {
         setState(() {
           stringResponseconsump = response.body;
         });
-        print(stringResponseconsump);
-        print("API request successful");
+        debugPrint(stringResponseconsump);
+        debugPrint("API request successful");
       } else {
-        print("API request failed with status code: ${response.statusCode}");
+        debugPrint(
+            "API request failed with status code: ${response.statusCode}");
       }
     } catch (e) {
-      print("An error occurred: $e");
+      debugPrint("An error occurred: $e");
       if (e is SocketException) {
-        print("No internet connection");
+        debugPrint("No internet connection");
         // Handle no internet connection here
       } else {
         // Handle other exceptions here
       }
     }
-  }*/
+  }
 
   // Called when the dependency of this state object changes
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     rty;
-    // apiConsumption();
-    consumptionApi();
+    apiConsumption();
+    // consumptionApi();
   }
 
   // Called whenever the widget configuration changes.
@@ -116,15 +118,15 @@ class _GraphState extends State<Graph> {
   void didUpdateWidget(covariant Graph oldWidget) {
     super.didUpdateWidget(oldWidget);
     rty;
-    // apiConsumption();
-    consumptionApi();
+    apiConsumption();
+    // consumptionApi();
   }
 
   @override
   void initState() {
     super.initState();
-    // apiConsumption();
-    consumptionApi();
+    apiConsumption();
+    // consumptionApi();
     rty;
     // final apicons = consumptionApi();
     /*Future<Object> consumptionApi() async {
@@ -152,7 +154,7 @@ class _GraphState extends State<Graph> {
     // var adf = consumptionApi();
     // print(adf);
 
-    print("hii");
+    debugPrint("hii");
     currentMonthList = date_util.UtilsDate.daysInMonth(currentDateTime);
     currentMonthList.sort((a, b) => a.day.compareTo(b.day));
     currentMonthList = currentMonthList.toSet().toList();
@@ -162,7 +164,7 @@ class _GraphState extends State<Graph> {
 
   //current date List
   //date list with scroll
-  Widget DateList() {
+  Widget dateList() {
     return SizedBox(
         height: 50,
         child: ListView.builder(
@@ -172,21 +174,21 @@ class _GraphState extends State<Graph> {
           physics: const ClampingScrollPhysics(),
           shrinkWrap: true,
           itemCount: currentMonthList.length,
-          itemBuilder: (BuildContext context, int index) => PresentDate(index),
+          itemBuilder: (BuildContext context, int index) => presentDate(index),
         ));
   }
 
-  Widget PresentDate(int index) {
+  Widget presentDate(int index) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
       child: GestureDetector(
           onTap: () {
             setState(() {
               (currentDateTime = currentMonthList[index]);
-              consumptionApi();
-              // apiConsumption();
+              // consumptionApi();
+              apiConsumption();
               rty = (rty);
-              print('select data => $currentDateTime');
+              debugPrint('select data => $currentDateTime');
             });
           },
           child: Container(
@@ -248,13 +250,13 @@ class _GraphState extends State<Graph> {
   }
 
   //Text of liters saved
-  Widget LitersOftext() {
+  Widget litersOfText() {
     return SizedBox(
         height: 50,
         child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
           Text(
-            rty != null ? rty!["tatalconsumption"].toString() : "00.0",
-            // stringResponseconsump != null ? "$stringResponseconsump" : "00.0",
+            // rty != null ? rty!["tatalconsumption"].toString() : "00.0",
+            stringResponseconsump != null ? "$stringResponseconsump" : "00.0",
             style: const TextStyle(
                 fontFamily: 'inter',
                 fontWeight: FontWeight.w700,
@@ -373,8 +375,8 @@ class _GraphState extends State<Graph> {
           ),
           body: RefreshIndicator(
             onRefresh: () {
-              consumptionApi();
-              // apiConsumption();
+              // consumptionApi();
+              apiConsumption();
               return Future<void>.delayed(const Duration(seconds: 3));
             },
             child: ListView(
@@ -415,8 +417,8 @@ class _GraphState extends State<Graph> {
                             onDateChange: (date) {
                               setState(() {
                                 selectedValue = date;
-                                consumptionApi();
-                                // apiConsumption();
+                                // consumptionApi();
+                                apiConsumption();
                                 rty = (rty);
                               });
                             },
@@ -429,7 +431,7 @@ class _GraphState extends State<Graph> {
                             color: Color(0xffAFD3F1),
                           ),
                           const SizedBox(height: 10),
-                          LitersOftext(),
+                          litersOfText(),
                           SizedBox(
                             height: 280,
                             child: MeasurmentGraph(rangeDate: rangeDate),

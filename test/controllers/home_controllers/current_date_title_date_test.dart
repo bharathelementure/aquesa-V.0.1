@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:otp_auth/controllers/home_controllers/currentdate_Titledate.dart';
-import 'package:otp_auth/utils/dart_Utils.dart' as date_util;
+import 'package:otp_auth/controllers/home_controllers/current_date_title_date.dart';
+import 'package:otp_auth/utils/dart_utils.dart' as date_util;
 
 void main() {
   group('CurrentDateTitleDate', () {

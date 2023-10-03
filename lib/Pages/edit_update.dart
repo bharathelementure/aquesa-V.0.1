@@ -12,7 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:otp_auth/Screens/home.dart';
 import 'package:otp_auth/controllers/save_localy.dart';
-import 'package:otp_auth/models/userModels.dart';
+import 'package:otp_auth/models/user_mode.dart';
 import 'package:path/path.dart';
 
 class EditUpdate extends StatefulWidget {
@@ -500,7 +500,7 @@ class _EditUpdateState extends State<EditUpdate> {
                         GestureDetector(
                           onTap: () async {
                             selectedImagePath = await selectImageFromCamera();
-                            print('Image_path:-');
+                            debugPrint('Image_path:-');
                             if (selectedImagePath != '') {
                               Navigator.of(context).pop();
                               setState(() {});

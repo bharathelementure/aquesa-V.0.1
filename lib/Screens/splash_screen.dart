@@ -1,5 +1,3 @@
-// ignore_for_file: empty_catches, unused_field, use_build_context_synchronously, file_names
-
 import 'dart:async';
 
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -7,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:otp_auth/main.dart';
-// import 'package:otp_auth/registration.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

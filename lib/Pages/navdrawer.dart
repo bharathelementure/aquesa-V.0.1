@@ -22,6 +22,7 @@ class _NavDrawerState extends State<NavDrawer> {
 
   // current user data fetched
   final curr = FirebaseAuth.instance.currentUser;
+  // final idtoken = curr!.getIdToken().then((value) => value);
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,7 @@ class _NavDrawerState extends State<NavDrawer> {
                                 );
                               }
                               if (snapshot.hasData && !snapshot.data!.exists) {
-                                // print(curr.uid);
+                                debugPrint("${curr!.getIdToken()}");
                                 // print('hello');
                                 return const Text(
                                   'Document does not exist',
@@ -80,7 +81,16 @@ class _NavDrawerState extends State<NavDrawer> {
                                   ConnectionState.done) {
                                 Map<String, dynamic> datare = snapshot.data!
                                     .data() as Map<String, dynamic>;
-                                print(curr);
+                                debugPrint("curr:- $curr");
+                                curr!
+                                    .getIdTokenResult()
+                                    .then((value) => debugPrint("$value"));
+                                // print(curr!.refreshToken);
+                                debugPrint("Hello");
+                                debugPrint("Hello Hello");
+                                curr!
+                                    .getIdToken()
+                                    .then((value) => debugPrint("$value"));
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,

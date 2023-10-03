@@ -1,7 +1,4 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
-// import 'package:otp_auth/Pages/navdrawer.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';

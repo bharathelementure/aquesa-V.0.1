@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:otp_auth/Screens/circularSetDailyLimit.dart';
+import 'package:otp_auth/Screens/circular_set_daily_limit.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:wave/wave.dart';
 

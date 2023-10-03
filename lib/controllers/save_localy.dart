@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:otp_auth/models/userModels.dart';
+import 'package:flutter/material.dart';
+import 'package:otp_auth/models/user_mode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 saveUserOffline(UserMode userMode) async {
@@ -12,6 +13,6 @@ saveUserOffline(UserMode userMode) async {
 
 String convertObjectToString(UserMode userMode) {
   String json = jsonEncode(userMode);
-  print("This is json $json");
+  debugPrint("This is json $json");
   return json;
 }

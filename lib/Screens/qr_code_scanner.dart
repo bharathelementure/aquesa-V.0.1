@@ -1,8 +1,5 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// import 'package:otp_auth/Pages/navdrawer.dart' show NavDrawer;
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrCodeScanner extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:otp_auth/Screens/qrCodeScanner.dart';
+import 'package:otp_auth/Screens/qr_code_scanner.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 void main() async {

@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable
-
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -7,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:otp_auth/Pages/createAccountPage.dart';
-import 'package:otp_auth/Pages/siginInPage.dart';
+import 'package:otp_auth/Pages/create_account_page.dart';
+import 'package:otp_auth/Pages/sigin_in_page.dart';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -112,8 +110,14 @@ class _RegistrationState extends State<Registration> {
                   ],
                   body: Container(
                       color: const Color(0xffFFFFFF),
-                      child: TabBarView(
-                          children: [ MyPhone(onClickedSignUp: () {  },), CreateAcountPage(onClickedSignIn: () {  },)])),
+                      child: TabBarView(children: [
+                        MyPhone(
+                          onClickedSignUp: () {},
+                        ),
+                        CreateAcountPage(
+                          onClickedSignIn: () {},
+                        )
+                      ])),
                 ))));
 
     /*DefaultTabController(
@@ -134,22 +138,25 @@ class _RegistrationState extends State<Registration> {
         child:
       TabBarView(children: [SignInPage(),CreateAcountPage(),]),)));*/
   }
+
   showDialogBox() => showCupertinoDialog<String>(
-    context: context,
-     builder: ((context) => CupertinoAlertDialog(
-      title: const Text('No Connection'),
-      content: const Text('Please check your internet connection'),
-      actions: <Widget>[
-        TextButton(onPressed: () async {
-          Navigator.pop(context, 'Cancel');
-          setState(() => isAlertSet = false);
-          isDeviceConnected = await InternetConnectionChecker().hasConnection;
-          if (!isDeviceConnected) {
-            showDialogBox();
-            setState(() => isAlertSet = true);
-          }
-        },
-         child: const Text('OK'))
-      ],
-     )));
+      context: context,
+      builder: ((context) => CupertinoAlertDialog(
+            title: const Text('No Connection'),
+            content: const Text('Please check your internet connection'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context, 'Cancel');
+                    setState(() => isAlertSet = false);
+                    isDeviceConnected =
+                        await InternetConnectionChecker().hasConnection;
+                    if (!isDeviceConnected) {
+                      showDialogBox();
+                      setState(() => isAlertSet = true);
+                    }
+                  },
+                  child: const Text('OK'))
+            ],
+          )));
 }

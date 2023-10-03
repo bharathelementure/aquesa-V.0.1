@@ -58,11 +58,11 @@ class _UtilityState extends State<Utility> {
                     toggleSize: 21,
                     value: switches,
                     onToggle: (value) async {
-                      await Future.delayed(Duration(minutes: 1));
+                      await Future.delayed(const Duration(minutes: 1));
                       setState(() {
                         switches = value;
                         if (value) {}
-                        print(value);
+                        debugPrint("$value");
                       });
                     }),
                 const Spacer(),

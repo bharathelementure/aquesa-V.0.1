@@ -4,7 +4,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:otp_auth/models/userModels.dart';
+import 'package:otp_auth/models/user_mode.dart';
 
 class CreateAcountPage extends StatefulWidget {
   final VoidCallback onClickedSignIn;
@@ -308,7 +308,7 @@ class _CreateAcountPageState extends State<CreateAcountPage> {
                               onChanged: (String? value) {
                                 setState(() {
                                   selectedValue = value;
-                                  print(selectedValue);
+                                  debugPrint(selectedValue);
                                 });
                               },
                             ),
